@@ -1,6 +1,8 @@
 package ch.juventus.carrental.controller;
 
-public class CarController {
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+public class CarController {
 
 }
