@@ -29,17 +29,20 @@ public class CarController {
 
 
 //    @GetMapping("/api/v1/helloworld")
+//    @CrossOrigin("http://localhost:4200")
 //   public ResponseEntity<String> helloWorld(){
 //        return new ResponseEntity<String>(carService.getGreeting(), HttpStatus.OK);
 //    }
 
 //    @GetMapping("/api/v1/helloworld/{id}")
+//    @CrossOrigin("http://localhost:4200")
 //    public ResponseEntity<String> helloWorldWithPathVariable(@PathVariable(value="id") Long id){
 //        String returnVal = "Hello World" + id;
 //        return new ResponseEntity<String>(returnVal, HttpStatus.OK);
 //    }
 //
 //    @GetMapping("/api/v1/helloworld")
+//    @CrossOrigin("http://localhost:4200")
 //    public ResponseEntity<String> helloWorldWithRequestVariable(@RequestParam(value="test", required = false) String myParam){
 //        String returnVal = "Hello World";
 //
@@ -51,6 +54,7 @@ public class CarController {
 //    }
 //
 //    @PostMapping("/api/v1/postmapping")
+//    @CrossOrigin("http://localhost:4200")
 //    public ResponseEntity<String> foo(@RequestBody Class myClass){
 //        return new ResponseEntity<String>(myClass.getField(), HttpStatus.OK);
 //    }
