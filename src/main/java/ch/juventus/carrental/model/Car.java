@@ -1,5 +1,9 @@
 package ch.juventus.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Car {
@@ -9,6 +13,34 @@ public class Car {
     private Enum<GearShift> gearShift;
     private Integer seats;
     private Double pricePerDay;
+    private Boolean airCondition;
+    private List<Rental> rentaly; 	// kann als array abgespeichert werden.
+
+    @JsonCreator
+    public Car(@JsonProperty("name") String name,@JsonProperty("type") String type, @JsonProperty("gearShift") String gearShift,
+               @JsonProperty("seats") Integer seats,@JsonProperty("pricePerDay") Double pricePerDay,@JsonProperty("airCondition") Boolean airCondition) {
+
+        this.name = name;
+        this.type = CarType.fromText(type);
+        this.gearShift = GearShift.fromText(gearShift);
+        this.seats = seats;
+        this.pricePerDay = pricePerDay;
+        this.airCondition = airCondition;
+        this.rentaly = new ArrayList<>();
+    }
+
+    public Car(Long id, String name, Enum<CarType> type, Enum<GearShift> gearShift, Integer seats, Double pricePerDay, Boolean airCondition, List<Rental> rentaly) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.gearShift = gearShift;
+        this.seats = seats;
+        this.pricePerDay = pricePerDay;
+        this.airCondition = airCondition;
+        this.rentaly = rentaly;
+    }
+
+    public Car(){}
 
     public Long getId() {
         return id;
@@ -74,6 +106,4 @@ public class Car {
         this.rentaly = rentaly;
     }
 
-    private Boolean airCondition;
-    private List<Rental> rentaly; 	// kann als array abgespeichert werden.
 }

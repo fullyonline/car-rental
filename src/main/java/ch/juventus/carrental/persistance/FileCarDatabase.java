@@ -2,13 +2,20 @@ package ch.juventus.carrental.persistance;
 
 import ch.juventus.carrental.model.Car;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository
 public class FileCarDatabase implements CarDatabase {
+
+    final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
+    private final String fileName = "cars.json";
 
     // read / write data
 
@@ -19,6 +26,20 @@ public class FileCarDatabase implements CarDatabase {
 
     @Override
     public void create(Car car) {
+        List<Car> cars = selectAll();
+        logger.info("create new car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
+                car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
+        cars.add(car);
+        try{
+            // create object mapper instance
+            ObjectMapper mapper = new ObjectMapper();
+
+            // convert book map to JSON file
+            mapper.writeValue(Paths.get(fileName).toFile(), cars);
+        }
+        catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
     }
 
     @Override
@@ -37,7 +58,22 @@ public class FileCarDatabase implements CarDatabase {
     }
 
     @Override
-    public void selectAll() {
+    public List<Car> selectAll() {
+        // Logger call
+        logger.info("selectAll");
+        // initialize
+        List<Car> cars = new ArrayList<>();
+        try{
+            // create object mapper instance
+            ObjectMapper mapper = new ObjectMapper();
 
+            // convert JSON array to list of cars
+            cars = Arrays.asList(mapper.readValue(Paths.get(fileName).toFile(), Car[].class));
+        }
+        catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
+        // has to be like that --> https://www.geeksforgeeks.org/how-to-solve-java-list-unsupportedoperationexception/
+        return new ArrayList<>(cars);
     }
 }

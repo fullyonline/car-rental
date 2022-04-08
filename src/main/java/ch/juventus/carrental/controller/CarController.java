@@ -1,7 +1,10 @@
 package ch.juventus.carrental.controller;
 
+import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.service.CarService;
 import ch.juventus.carrental.service.DefaultCarService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -50,9 +53,27 @@ public class CarController {
 //        return new ResponseEntity<String>(returnVal, HttpStatus.OK);
 //    }
 //
-//    @PostMapping("/api/v1/postmapping")
-//    public ResponseEntity<String> foo(@RequestBody Class myClass){
-//        return new ResponseEntity<String>(myClass.getField(), HttpStatus.OK);
-//    }
+
+
+    /**
+    example Call:
+
+    body:
+    {
+        "name": "test",
+        "type": "LIMUSINE",
+        "gearShift": "AUTOMATIK",
+        "seats": 2,
+        "pricePerDay": 32,
+        "airCondition": true
+    }
+     */
+
+
+    @PostMapping("/api/v1/car")
+    public ResponseEntity<String> createNewCar(@RequestBody Car car){
+        defaultCarService.createNewCar(car);
+        return new ResponseEntity<String>("created", HttpStatus.OK);
+    }
 
 }
