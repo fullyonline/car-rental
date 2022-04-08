@@ -4,10 +4,9 @@ import ch.juventus.carrental.persistance.CarDatabase;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DefaultCarService {
+public class DefaultCarService implements CarService{
 
     // implements business logic
-    // soll interface geben
 
     private final CarDatabase carDatabase;
 
