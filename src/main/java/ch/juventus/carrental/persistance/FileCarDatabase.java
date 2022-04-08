@@ -3,7 +3,7 @@ package ch.juventus.carrental.persistance;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CarDatabase {
+public class FileCarDatabase {
 
     // read / write data
     // soll interface geben
