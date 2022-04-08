@@ -8,8 +8,4 @@ public class FileCarDatabase implements CarDatabase {
     // read / write data
     // soll interface geben
 
-    public String loadGreeting(){
-        return "Hello World";
-    }
-
 }

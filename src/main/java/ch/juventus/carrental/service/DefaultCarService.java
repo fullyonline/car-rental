@@ -14,7 +14,4 @@ public class DefaultCarService implements CarService{
         this.fileCarDatabase = fileCarDatabase;
     }
 
-    public String getGreeting(){
-        return fileCarDatabase.loadGreeting();
-    }
 }
