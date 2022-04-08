@@ -1,8 +1,6 @@
 package ch.juventus.carrental.controller;
 
-import ch.juventus.carrental.service.CarService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import ch.juventus.carrental.service.DefaultCarService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,10 +9,10 @@ public class CarController {
 
     // only handle http requests
 
-    private final CarService carService;
+    private final DefaultCarService defaultCarService;
 
-    public CarController(CarService carService) {
-        this.carService = carService;
+    public CarController(DefaultCarService defaultCarService) {
+        this.defaultCarService = defaultCarService;
     }
 
 
