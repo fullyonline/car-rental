@@ -1,5 +1,6 @@
 package ch.juventus.carrental.controller;
 
+import ch.juventus.carrental.service.CarService;
 import ch.juventus.carrental.service.DefaultCarService;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +10,9 @@ public class CarController {
 
     // only handle http requests
 
-    private final DefaultCarService defaultCarService;
+    private final CarService defaultCarService;
 
-    public CarController(DefaultCarService defaultCarService) {
+    public CarController(CarService defaultCarService) {
         this.defaultCarService = defaultCarService;
     }
 
