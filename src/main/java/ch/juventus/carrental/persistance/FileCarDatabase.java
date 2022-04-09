@@ -63,6 +63,7 @@ public class FileCarDatabase implements CarDatabase {
         logger.info("selectAll");
         // initialize
         List<Car> cars = new ArrayList<>();
+        // TODO: Check if File is availible
         try{
             // create object mapper instance
             ObjectMapper mapper = new ObjectMapper();

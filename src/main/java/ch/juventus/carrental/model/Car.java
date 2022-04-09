@@ -17,12 +17,12 @@ public class Car {
     private List<Rental> rentaly; 	// kann als array abgespeichert werden.
 
     @JsonCreator
-    public Car(@JsonProperty("name") String name,@JsonProperty("type") String type, @JsonProperty("gearShift") String gearShift,
+    public Car(@JsonProperty("name") String name,@JsonProperty("type") CarType type, @JsonProperty("gearShift") GearShift gearShift,
                @JsonProperty("seats") Integer seats,@JsonProperty("pricePerDay") Double pricePerDay,@JsonProperty("airCondition") Boolean airCondition) {
 
         this.name = name;
-        this.type = CarType.fromText(type);
-        this.gearShift = GearShift.fromText(gearShift);
+        this.type = type;
+        this.gearShift = gearShift;
         this.seats = seats;
         this.pricePerDay = pricePerDay;
         this.airCondition = airCondition;

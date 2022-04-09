@@ -54,22 +54,6 @@ public class CarController {
 //    }
 //
 
-
-    /**
-    example Call:
-
-    body:
-    {
-        "name": "test",
-        "type": "LIMUSINE",
-        "gearShift": "AUTOMATIK",
-        "seats": 2,
-        "pricePerDay": 32,
-        "airCondition": true
-    }
-     */
-
-
     @PostMapping("/api/v1/car")
     public ResponseEntity<String> createNewCar(@RequestBody Car car){
         defaultCarService.createNewCar(car);
