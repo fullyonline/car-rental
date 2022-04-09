@@ -16,6 +16,7 @@ import java.util.List;
 public class FileCarDatabase implements CarDatabase {
 
     final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
+    // TODO: auf richtige Location zeigen. Im Moment ist diese auf dem Parent directory
     private final String fileName = "cars.json";
 
     // read / write data
