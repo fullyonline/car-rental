@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,15 +65,22 @@ public class FileCarDatabase implements CarDatabase {
         // initialize
         List<Car> cars = new ArrayList<>();
         // TODO: Check if File is availible
-        try{
-            // create object mapper instance
-            ObjectMapper mapper = new ObjectMapper();
+        File file = new File(fileName);
+        if(file.exists() && !file.isDirectory()){
+            logger.info("file {} exists", fileName);
+            try{
+                // create object mapper instance
+                ObjectMapper mapper = new ObjectMapper();
 
-            // convert JSON array to list of cars
-            cars = Arrays.asList(mapper.readValue(Paths.get(fileName).toFile(), Car[].class));
+                // convert JSON array to list of cars
+                cars = Arrays.asList(mapper.readValue(file, Car[].class));
+            }
+            catch(Exception ex){
+                logger.error(ex.getMessage());
+            }
         }
-        catch(Exception ex){
-            logger.error(ex.getMessage());
+        else {
+            logger.info("file {} does not exist", fileName);
         }
         // has to be like that --> https://www.geeksforgeeks.org/how-to-solve-java-list-unsupportedoperationexception/
         return new ArrayList<>(cars);
