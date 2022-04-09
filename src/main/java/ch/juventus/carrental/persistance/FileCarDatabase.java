@@ -67,7 +67,7 @@ public class FileCarDatabase implements CarDatabase {
         List<Car> cars = new ArrayList<>();
         // TODO: Check if File is availible
         File file = new File(fileName);
-        if(file.exists() && !file.isDirectory()){
+        if(file.exists() && file.isFile()){
             logger.info("file {} exists", fileName);
             try{
                 // create object mapper instance
