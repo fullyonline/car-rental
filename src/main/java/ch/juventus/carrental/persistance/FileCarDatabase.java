@@ -10,24 +10,48 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
 public class FileCarDatabase implements CarDatabase {
 
     final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
+    private Long highestGivenId;
     // TODO: auf richtige Location zeigen. Im Moment ist diese auf dem Parent directory
     private final String fileName = "cars.json";
 
     // read / write data
 
+    public FileCarDatabase(){
+        highestGivenId  = Long.valueOf(0);
+    }
+
     @Override
     public Long getNewId() {
-        return Long.valueOf(1); // TODO: fix me
+        // first iteration needs to check the ids of saved cars, next iterations --> cache
+        if(highestGivenId == 0){
+            logger.info("need to look for valid id");
+            List<Car> cars = selectAll();
+
+            // get the higest id of the existing list
+            Iterator<Car> carIterator = cars.stream().iterator();
+            while(carIterator.hasNext()){
+                Car nextCar = carIterator.next();
+                if(nextCar.getId() > highestGivenId){
+                    highestGivenId = nextCar.getId();
+                }
+            }
+        }
+        // add +1 to represent a new valid id
+        highestGivenId++;
+        logger.info("new valid id {}", highestGivenId);
+        return highestGivenId;
     }
 
     @Override
     public void create(Car car) {
+        car.setId(getNewId());
         List<Car> cars = selectAll();
         logger.info("create new car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                 car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
@@ -62,7 +86,7 @@ public class FileCarDatabase implements CarDatabase {
     @Override
     public List<Car> selectAll() {
         // Logger call
-        logger.info("selectAll");
+        logger.info("select all");
         // initialize
         List<Car> cars = new ArrayList<>();
         // TODO: Check if File is availible
