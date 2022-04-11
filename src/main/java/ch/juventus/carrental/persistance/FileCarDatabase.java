@@ -8,10 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class FileCarDatabase implements CarDatabase {
@@ -32,10 +29,10 @@ public class FileCarDatabase implements CarDatabase {
         // first iteration needs to check the ids of saved cars, next iterations --> cache
         if(highestGivenId == 0){
             logger.info("need to look for valid id");
-            List<Car> cars = selectAll();
+            Map<Long, Car> cars = selectAll();
 
             // get the higest id of the existing list
-            Iterator<Car> carIterator = cars.stream().iterator();
+            Iterator<Car> carIterator = cars.values().iterator();
             while(carIterator.hasNext()){
                 Car nextCar = carIterator.next();
                 if(nextCar.getId() > highestGivenId){
@@ -52,10 +49,10 @@ public class FileCarDatabase implements CarDatabase {
     @Override
     public void create(Car car) {
         car.setId(getNewId());
-        List<Car> cars = selectAll();
+        Map<Long, Car> cars = selectAll();
         logger.info("create new car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                 car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
-        cars.add(car);
+        cars.put(car.getId(), car);
         try{
             // create object mapper instance
             ObjectMapper mapper = new ObjectMapper();
@@ -84,11 +81,11 @@ public class FileCarDatabase implements CarDatabase {
     }
 
     @Override
-    public List<Car> selectAll() {
+    public Map<Long, Car> selectAll() {
         // Logger call
         logger.info("select all");
         // initialize
-        List<Car> cars = new ArrayList<>();
+        Map<Long, Car> cars = new HashMap<>();
         // TODO: Check if File is availible
         File file = new File(fileName);
         if(file.exists() && file.isFile()){
@@ -98,7 +95,7 @@ public class FileCarDatabase implements CarDatabase {
                 ObjectMapper mapper = new ObjectMapper();
 
                 // convert JSON array to list of cars
-                cars = Arrays.asList(mapper.readValue(file, Car[].class));
+                cars = mapper.readValue(file, HashMap.class);
             }
             catch(Exception ex){
                 logger.error(ex.getMessage());
@@ -108,6 +105,6 @@ public class FileCarDatabase implements CarDatabase {
             logger.info("file {} does not exist", fileName);
         }
         // has to be like that --> https://www.geeksforgeeks.org/how-to-solve-java-list-unsupportedoperationexception/
-        return new ArrayList<>(cars);
+        return cars;
     }
 }

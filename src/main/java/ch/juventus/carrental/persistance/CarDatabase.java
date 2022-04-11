@@ -2,7 +2,9 @@ package ch.juventus.carrental.persistance;
 
 import ch.juventus.carrental.model.Car;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface CarDatabase {
 
@@ -11,5 +13,5 @@ public interface CarDatabase {
     void delete(Integer id);
     void update(Car car);
     void select(Integer id);
-    List<Car> selectAll();
+    Map<Long, Car> selectAll();
 }
