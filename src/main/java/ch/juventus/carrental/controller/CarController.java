@@ -55,9 +55,9 @@ public class CarController {
 //
 
     @PostMapping("/api/v1/car")
-    public ResponseEntity<String> createNewCar(@RequestBody Car car){
+    public ResponseEntity<Boolean> createNewCar(@RequestBody Car car){
         defaultCarService.createNewCar(car);
-        return new ResponseEntity<String>("created", HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
 }
