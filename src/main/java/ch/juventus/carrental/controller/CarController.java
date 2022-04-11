@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin("http://localhost:4200")
 public class CarController {
@@ -58,6 +60,11 @@ public class CarController {
     public ResponseEntity<Boolean> createNewCar(@RequestBody Car car){
         defaultCarService.createNewCar(car);
         return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/cars")
+    public ResponseEntity<List<Car>> GetAllCars(){
+        return new ResponseEntity<>(defaultCarService.getAllCars(), HttpStatus.OK);
     }
 
 }

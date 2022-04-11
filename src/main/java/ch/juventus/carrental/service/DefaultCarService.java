@@ -5,6 +5,8 @@ import ch.juventus.carrental.persistance.CarDatabase;
 import ch.juventus.carrental.persistance.FileCarDatabase;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DefaultCarService implements CarService{
 
@@ -21,5 +23,10 @@ public class DefaultCarService implements CarService{
     public void createNewCar(Car car) {
         // TODO: Fehlerhandling bei nicht gesetzten fields
         fileCarDatabase.create(car);
+    }
+
+    @Override
+    public List<Car> getAllCars() {
+        return fileCarDatabase.selectAll();
     }
 }
