@@ -86,7 +86,6 @@ public class FileCarDatabase implements CarDatabase {
         logger.info("select all");
         // initialize
         Map<Long, Car> cars = new HashMap<>();
-        // TODO: Check if File is availible
         File file = new File(fileName);
         if(file.exists() && file.isFile()){
             logger.info("file {} exists", fileName);
@@ -104,7 +103,6 @@ public class FileCarDatabase implements CarDatabase {
         else {
             logger.info("file {} does not exist", fileName);
         }
-        // has to be like that --> https://www.geeksforgeeks.org/how-to-solve-java-list-unsupportedoperationexception/
         return cars;
     }
 }
