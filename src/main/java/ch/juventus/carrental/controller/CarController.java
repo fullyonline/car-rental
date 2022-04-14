@@ -2,7 +2,6 @@ package ch.juventus.carrental.controller;
 
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.service.CarService;
-import ch.juventus.carrental.service.DefaultCarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,9 +61,14 @@ public class CarController {
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
+    @GetMapping("/api/v1/car/{id}")
+    public ResponseEntity<Car> createNewCar(@PathVariable(value="id") Long id){
+        return new ResponseEntity<>(defaultCarService.GetCar(id), HttpStatus.OK);
+    }
+
     @GetMapping("/api/v1/cars")
     public ResponseEntity<List<Car>> GetAllCars(){
-        return new ResponseEntity<>(defaultCarService.getAllCars(), HttpStatus.OK);
+        return new ResponseEntity<>(defaultCarService.getCars(), HttpStatus.OK);
     }
 
 }

@@ -2,7 +2,6 @@ package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.persistance.CarDatabase;
-import ch.juventus.carrental.persistance.FileCarDatabase;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,7 +26,12 @@ public class DefaultCarService implements CarService{
     }
 
     @Override
-    public List<Car> getAllCars() {
-        return new ArrayList(fileCarDatabase.selectAll().values());
+    public List<Car> getCars() {
+        return new ArrayList(fileCarDatabase.select().values());
+    }
+
+    @Override
+    public Car GetCar(Long id) {
+        return fileCarDatabase.select(id);
     }
 }

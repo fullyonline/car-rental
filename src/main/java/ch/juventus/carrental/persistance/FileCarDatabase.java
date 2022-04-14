@@ -1,6 +1,7 @@
 package ch.juventus.carrental.persistance;
 
 import ch.juventus.carrental.model.Car;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class FileCarDatabase implements CarDatabase {
         // first iteration needs to check the ids of saved cars, next iterations --> cache
         if(highestGivenId == 0){
             logger.info("need to look for valid id");
-            Map<Long, Car> cars = selectAll();
+            Map<Long, Car> cars = select();
 
             // get the higest id of the existing list
             Iterator<Car> carIterator = cars.values().iterator();
@@ -49,7 +50,7 @@ public class FileCarDatabase implements CarDatabase {
     @Override
     public void create(Car car) {
         car.setId(getNewId());
-        Map<Long, Car> cars = selectAll();
+        Map<Long, Car> cars = select();
         logger.info("create new car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                 car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
         cars.put(car.getId(), car);
@@ -76,14 +77,19 @@ public class FileCarDatabase implements CarDatabase {
     }
 
     @Override
-    public void select(Integer id) {
-
+    public Car select(Long id) {
+        logger.info("select car with id {}", id);
+        Map<Long, Car> cars = select();
+        if(cars.containsKey(id)){
+            return cars.get(id);
+        }
+        throw new IllegalArgumentException("No Car with this Id");
     }
 
     @Override
-    public Map<Long, Car> selectAll() {
+    public Map<Long, Car> select() {
         // Logger call
-        logger.info("select all");
+        logger.info("select");
         // initialize
         Map<Long, Car> cars = new HashMap<>();
         File file = new File(fileName);
