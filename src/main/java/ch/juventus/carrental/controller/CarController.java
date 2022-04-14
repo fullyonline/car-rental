@@ -66,6 +66,11 @@ public class CarController {
         return new ResponseEntity<>(defaultCarService.GetCar(id), HttpStatus.OK);
     }
 
+    @DeleteMapping("/api/v1/car/{id}")
+    public ResponseEntity<Boolean> deleteCar(@PathVariable(value="id") Long id){
+        return new ResponseEntity<>(defaultCarService.deleteCar(id), HttpStatus.OK);
+    }
+
     @PutMapping("/api/v1/car/{id}")
     public ResponseEntity<Boolean> updateCar(@PathVariable(value="id") Long id, @RequestBody Car car){
         return new ResponseEntity<>(defaultCarService.UpdateCar(id, car), HttpStatus.OK);

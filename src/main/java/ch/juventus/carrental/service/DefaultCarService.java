@@ -40,4 +40,9 @@ public class DefaultCarService implements CarService{
         // TODO: Fehlerhandling
         return fileCarDatabase.update(id, car);
     }
+
+    @Override
+    public Boolean deleteCar(Long id) {
+        return fileCarDatabase.delete(id);
+    }
 }
