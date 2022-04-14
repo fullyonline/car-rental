@@ -74,8 +74,18 @@ public class FileCarDatabase implements CarDatabase {
     }
 
     @Override
-    public void update(Car car) {
-
+    public Boolean update(Long id, Car car) {
+        logger.info("update car with id {}", id);
+        logger.info("update car with key {} in car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
+                id, car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
+        Map<Long, Car> cars = select();
+        if(cars.containsKey(id)){
+            // overrides existing (key, value)
+            cars.put(id, car);
+            WriteToFile(cars);
+            return true;
+        }
+        return false;
     }
 
     @Override

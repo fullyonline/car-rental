@@ -11,4 +11,6 @@ public interface CarService {
     List<Car> getCars();
 
     Car GetCar(Long id);
+
+    Boolean UpdateCar(Long id, Car car);
 }

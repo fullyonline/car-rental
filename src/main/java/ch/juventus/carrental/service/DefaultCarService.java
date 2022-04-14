@@ -34,4 +34,10 @@ public class DefaultCarService implements CarService{
     public Car GetCar(Long id) {
         return fileCarDatabase.select(id);
     }
+
+    @Override
+    public Boolean UpdateCar(Long id, Car car) {
+        // TODO: Fehlerhandling
+        return fileCarDatabase.update(id, car);
+    }
 }

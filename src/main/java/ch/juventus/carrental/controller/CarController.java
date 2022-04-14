@@ -66,6 +66,11 @@ public class CarController {
         return new ResponseEntity<>(defaultCarService.GetCar(id), HttpStatus.OK);
     }
 
+    @PutMapping("/api/v1/car/{id}")
+    public ResponseEntity<Boolean> updateCar(@PathVariable(value="id") Long id, @RequestBody Car car){
+        return new ResponseEntity<>(defaultCarService.UpdateCar(id, car), HttpStatus.OK);
+    }
+
     @GetMapping("/api/v1/cars")
     public ResponseEntity<List<Car>> GetAllCars(){
         return new ResponseEntity<>(defaultCarService.getCars(), HttpStatus.OK);
