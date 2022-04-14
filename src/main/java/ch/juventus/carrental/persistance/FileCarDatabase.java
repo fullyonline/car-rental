@@ -17,7 +17,7 @@ public class FileCarDatabase implements CarDatabase {
     final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
     private Long highestGivenId;
     // TODO: auf richtige Location zeigen. Im Moment ist diese auf dem Parent directory
-    private final String fileName = "cars.json";
+    private final String fileName = "car-rental\\src\\main\\java\\ch\\juventus\\carrental\\database\\cars.json";
 
     // read / write data
 
