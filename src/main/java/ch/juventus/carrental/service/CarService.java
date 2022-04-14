@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CarService {
 
-    void createNewCar(Car car);
+    Boolean createCar(Car car);
 
     List<Car> getCars();
 

@@ -25,7 +25,7 @@ public class FileCarDatabase implements CarDatabase {
         highestGivenId  = Long.valueOf(0);
     }
 
-    private Boolean WriteToFile(Map<Long, Car> cars){
+    private Boolean writeToFile(Map<Long, Car> cars){
         try{
             // create object mapper instance
             ObjectMapper mapper = new ObjectMapper();
@@ -60,14 +60,14 @@ public class FileCarDatabase implements CarDatabase {
     }
 
     @Override
-    public void create(Car car) {
+    public Boolean create(Car car) {
         car.setId(getNewId());
         Map<Long, Car> cars = select();
         logger.info("create new car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                 car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
         cars.put(car.getId(), car);
         // Write the file down
-        WriteToFile(cars);
+        return writeToFile(cars);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class FileCarDatabase implements CarDatabase {
         Map<Long, Car> cars = select();
         if(cars.containsKey(id)){
             cars.remove(id);
-            return WriteToFile(cars);
+            return writeToFile(cars);
         }
         return false;
     }
@@ -90,7 +90,7 @@ public class FileCarDatabase implements CarDatabase {
         if(cars.containsKey(id)){
             // overrides existing (key, value)
             cars.put(id, car);
-            return WriteToFile(cars);
+            return writeToFile(cars);
         }
         return false;
     }

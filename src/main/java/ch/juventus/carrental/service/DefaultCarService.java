@@ -20,9 +20,9 @@ public class DefaultCarService implements CarService{
 
 
     @Override
-    public void createNewCar(Car car) {
+    public Boolean createCar(Car car) {
         // TODO: Fehlerhandling bei nicht gesetzten fields
-        fileCarDatabase.create(car);
+        return fileCarDatabase.create(car);
     }
 
     @Override
