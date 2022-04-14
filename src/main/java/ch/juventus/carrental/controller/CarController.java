@@ -56,14 +56,14 @@ public class CarController {
     */
 
     @PostMapping("/api/v1/car")
-    public ResponseEntity<Boolean> createNewCar(@RequestBody Car car){
+    public ResponseEntity<Boolean> createCar(@RequestBody Car car){
         defaultCarService.createNewCar(car);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/car/{id}")
-    public ResponseEntity<Car> createNewCar(@PathVariable(value="id") Long id){
-        return new ResponseEntity<>(defaultCarService.GetCar(id), HttpStatus.OK);
+    public ResponseEntity<Car> getCar(@PathVariable(value="id") Long id){
+        return new ResponseEntity<>(defaultCarService.getCar(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/api/v1/car/{id}")
@@ -73,7 +73,7 @@ public class CarController {
 
     @PutMapping("/api/v1/car/{id}")
     public ResponseEntity<Boolean> updateCar(@PathVariable(value="id") Long id, @RequestBody Car car){
-        return new ResponseEntity<>(defaultCarService.UpdateCar(id, car), HttpStatus.OK);
+        return new ResponseEntity<>(defaultCarService.updateCar(id, car), HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/cars")

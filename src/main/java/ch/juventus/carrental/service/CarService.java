@@ -10,9 +10,9 @@ public interface CarService {
 
     List<Car> getCars();
 
-    Car GetCar(Long id);
+    Car getCar(Long id);
 
-    Boolean UpdateCar(Long id, Car car);
+    Boolean updateCar(Long id, Car car);
 
     Boolean deleteCar(Long id);
 }

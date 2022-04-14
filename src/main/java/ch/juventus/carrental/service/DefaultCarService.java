@@ -31,12 +31,12 @@ public class DefaultCarService implements CarService{
     }
 
     @Override
-    public Car GetCar(Long id) {
+    public Car getCar(Long id) {
         return fileCarDatabase.select(id);
     }
 
     @Override
-    public Boolean UpdateCar(Long id, Car car) {
+    public Boolean updateCar(Long id, Car car) {
         // TODO: Fehlerhandling
         return fileCarDatabase.update(id, car);
     }
