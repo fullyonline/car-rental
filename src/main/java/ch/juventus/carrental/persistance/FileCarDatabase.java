@@ -25,6 +25,19 @@ public class FileCarDatabase implements CarDatabase {
         highestGivenId  = Long.valueOf(0);
     }
 
+    private void WriteToFile(Map<Long, Car> cars){
+        try{
+            // create object mapper instance
+            ObjectMapper mapper = new ObjectMapper();
+
+            // convert book map to JSON file
+            mapper.writeValue(Paths.get(fileName).toFile(), cars);
+        }
+        catch(Exception ex){
+            logger.error(ex.getMessage());
+        }
+    }
+
     private Long getNewId() {
         // first iteration needs to check the ids of saved cars, next iterations --> cache
         if(highestGivenId == 0){
@@ -51,16 +64,8 @@ public class FileCarDatabase implements CarDatabase {
         logger.info("create new car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                 car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
         cars.put(car.getId(), car);
-        try{
-            // create object mapper instance
-            ObjectMapper mapper = new ObjectMapper();
-
-            // convert book map to JSON file
-            mapper.writeValue(Paths.get(fileName).toFile(), cars);
-        }
-        catch(Exception ex){
-            logger.error(ex.getMessage());
-        }
+        // Write the file down
+        WriteToFile(cars);
     }
 
     @Override
