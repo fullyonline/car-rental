@@ -33,10 +33,8 @@ public class FileCarDatabase implements CarDatabase {
             Map<Long, Car> cars = select();
 
             // get the higest id of the existing list
-            Iterator<Car> carIterator = cars.values().iterator();
-            while(carIterator.hasNext()){
-                Car nextCar = carIterator.next();
-                if(nextCar.getId() > highestGivenId){
+            for (Car nextCar : cars.values()) {
+                if (nextCar.getId() > highestGivenId) {
                     highestGivenId = nextCar.getId();
                 }
             }
@@ -99,8 +97,11 @@ public class FileCarDatabase implements CarDatabase {
                 // create object mapper instance
                 ObjectMapper mapper = new ObjectMapper();
 
+                // define the type we are reading
+                TypeReference<HashMap<Long, Car>> typeRef = new TypeReference<>() {};
+
                 // convert JSON array to list of cars
-                cars = mapper.readValue(file, HashMap.class);
+                cars = mapper.readValue(file, typeRef);
             }
             catch(Exception ex){
                 logger.error(ex.getMessage());
