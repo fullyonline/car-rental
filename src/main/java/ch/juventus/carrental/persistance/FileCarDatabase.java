@@ -25,8 +25,7 @@ public class FileCarDatabase implements CarDatabase {
         highestGivenId  = Long.valueOf(0);
     }
 
-    @Override
-    public Long getNewId() {
+    private Long getNewId() {
         // first iteration needs to check the ids of saved cars, next iterations --> cache
         if(highestGivenId == 0){
             logger.info("need to look for valid id");

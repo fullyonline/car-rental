@@ -6,7 +6,6 @@ import java.util.Map;
 
 public interface CarDatabase {
 
-    Long getNewId();
     void create(Car car);
     void delete(Integer id);
     void update(Car car);
