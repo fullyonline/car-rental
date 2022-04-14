@@ -26,34 +26,34 @@ public class CarController {
     // https://attacomsian.com/blog/jackson-read-write-json
     // https://www.baeldung.com/spring-boot-json
 
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder){
-//        binder.registerCustomEditor(Class.class, new MyClassEditor());
-//    }
+
+    /*
+    TODO: Endpunkte, welche noch gemacht werden müssen
+
+    POST 	/api/v1/car/{id}/rental 	--> erstellt eine neue Reservation
 
 
-//    @GetMapping("/api/v1/helloworld")
-//   public ResponseEntity<String> helloWorld(){
-//        return new ResponseEntity<String>(carService.getGreeting(), HttpStatus.OK);
-//    }
+    GET 	/api/v1/cars?filter={
+        "startDate" : "",					default: null
+            "endDate" : "", 					default: null
+            "searchQuery" : "",					default: null
+            "type" : ["", "", ""],				default: null
+            "gearShift" : "",					default: null
+            "minPricePerDay" : "",				default: null
+            "maxPricePerDay" : "",				default: null
+            "seats" : [2, 3, 4],				default: null
+            "airCondition" : true | false,		default: null
+    }
 
-//    @GetMapping("/api/v1/helloworld/{id}")
-//    public ResponseEntity<String> helloWorldWithPathVariable(@PathVariable(value="id") Long id){
-//        String returnVal = "Hello World" + id;
-//        return new ResponseEntity<String>(returnVal, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/api/v1/helloworld")
-//    public ResponseEntity<String> helloWorldWithRequestVariable(@RequestParam(value="test", required = false) String myParam){
-//        String returnVal = "Hello World";
-//
-//        if(myParam != null){
-//            returnVal = returnVal + " " + myParam;
-//        }
-//
-//        return new ResponseEntity<String>(returnVal, HttpStatus.OK);
-//    }
-//
+    Fertige Endpunkte (Business Logik fehlt noch):
+
+    GET 	/api/v1/cars 				--> Liefert alle Autos zurück
+    GET 	/api/v1/car/{id} 			--> Liefert ein konkretes Auto zurück
+    PUT 	/api/v1/car/{id} 			--> Dated ein spezifisches Auto ab
+    POST 	/api/v1/car 				--> erstellt ein neues Auto
+    DELETE 	/api/v1/car/{id} 			--> Löscht ein spezifisches Auto
+
+    */
 
     @PostMapping("/api/v1/car")
     public ResponseEntity<Boolean> createNewCar(@RequestBody Car car){
