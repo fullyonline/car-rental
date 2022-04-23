@@ -17,7 +17,7 @@ public class FileCarDatabase implements CarDatabase {
     final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
     private Long highestGivenId;
 
-    private final String fileName = "car-rental\\src\\main\\java\\ch\\juventus\\carrental\\database\\cars.json";
+    private final String fileName = "src\\main\\java\\ch\\juventus\\carrental\\database\\cars.json";
 
     // read / write data
 
