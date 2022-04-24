@@ -42,7 +42,6 @@ public class DefaultCarService implements CarService{
 
     @Override
     public Boolean updateCar(Long id, Car car) {
-        // TODO: Fehlerhandling
         if(isValidCar(car)){
             return fileCarDatabase.update(id, car);
         }
