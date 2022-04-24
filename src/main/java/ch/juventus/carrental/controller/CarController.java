@@ -45,7 +45,7 @@ public class CarController {
             "airCondition" : true | false,		default: null
     }
 
-    Fertige Endpunkte (Business Logik fehlt noch):
+    Fertige Endpunkte:
 
     GET 	/api/v1/cars 				--> Liefert alle Autos zurück
     GET 	/api/v1/car/{id} 			--> Liefert ein konkretes Auto zurück
