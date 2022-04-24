@@ -78,6 +78,7 @@ public class FileCarDatabase implements CarDatabase {
             cars.remove(id);
             return writeToFile(cars);
         }
+        logger.warn("no car with id {} in database", id);
         return false;
     }
 
