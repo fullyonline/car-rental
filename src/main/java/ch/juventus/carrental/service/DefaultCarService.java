@@ -55,9 +55,8 @@ public class DefaultCarService implements CarService{
      * Helper
      */
     private Boolean isValidCar(Car car){
-        if(car.getGearShift() == null || car.getAirCondition() == null || car.getSeats() == null || car.getType() == null ||
-                car.getPricePerDay() == null || car.getPricePerDay() < 1 || car.getSeats() < 1 ){
-            logger.info("invalide car object car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
+        if(!car.isValid()){
+            logger.error("invalid car object car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                     car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
 
             // these values must be positive

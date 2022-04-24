@@ -106,4 +106,9 @@ public class Car {
         this.rentaly = rentaly;
     }
 
+    public Boolean isValid(){
+        return gearShift != null && airCondition != null && seats != null && type != null &&
+                pricePerDay != null && pricePerDay > 0 && seats > 0;
+    }
+
 }
