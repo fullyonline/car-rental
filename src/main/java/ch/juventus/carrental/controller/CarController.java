@@ -1,6 +1,7 @@
 package ch.juventus.carrental.controller;
 
 import ch.juventus.carrental.model.Car;
+import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.service.CarService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +79,11 @@ public class CarController {
     @GetMapping("/api/v1/cars")
     public ResponseEntity<List<Car>> GetAllCars(){
         return new ResponseEntity<>(defaultCarService.getCars(), HttpStatus.OK);
+    }
+
+    @PutMapping("/api/v1/car/{id}/rent")
+    public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
+        return new ResponseEntity<>(defaultCarService.createRental(id, rental), HttpStatus.OK);
     }
 
 }

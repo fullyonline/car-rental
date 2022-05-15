@@ -1,6 +1,7 @@
 package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
+import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
 import ch.juventus.carrental.persistance.FileCarDatabase;
 import org.slf4j.Logger;
@@ -50,6 +51,11 @@ public class DefaultCarService implements CarService{
 
     @Override
     public Boolean deleteCar(Long id) { return fileCarDatabase.delete(id); }
+
+    @Override
+    public Boolean createRental(Long id, Rental rental) {
+        return true;
+    }
 
     /**
      * Helper
