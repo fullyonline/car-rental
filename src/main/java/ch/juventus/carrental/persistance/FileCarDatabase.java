@@ -1,6 +1,7 @@
 package ch.juventus.carrental.persistance;
 
 import ch.juventus.carrental.model.Car;
+import ch.juventus.carrental.model.Rental;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -133,5 +134,21 @@ public class FileCarDatabase implements CarDatabase {
             logger.info("file {} does not exist", fileName);
         }
         return cars;
+    }
+
+    @Override
+    public Boolean createRental(Long carId, Rental rental) {
+        logger.info("update rental of car with id {}", carId);
+        logger.info("update rental of car with key {} in rental{ startDate {}, endDate {}, totalPrice {} }",
+                carId, rental.getStartDate(), rental.getEndDate(), rental.getTotalPrice());
+        Map<Long, Car> cars = select();
+        if(cars.containsKey(carId)){
+            // adds rental to existingRentals
+            Car existingCar = cars.get(carId);
+            List<Rental> existingRentals = existingCar.getRentaly();
+            existingRentals.add(rental);
+            return writeToFile(cars);
+        }
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 package ch.juventus.carrental.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -106,6 +107,7 @@ public class Car {
         this.rentaly = rentaly;
     }
 
+    @JsonIgnore
     public Boolean isValid(){
         return gearShift != null && airCondition != null && seats != null && type != null &&
                 pricePerDay != null && pricePerDay > 0 && seats > 0;

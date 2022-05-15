@@ -54,7 +54,17 @@ public class DefaultCarService implements CarService{
 
     @Override
     public Boolean createRental(Long id, Rental rental) {
-        return true;
+        if(isValidRental(rental)){
+            Double totalPrice = calculateTotalPrice(rental);
+            rental.setTotalPrice(totalPrice);
+            return fileCarDatabase.createRental(id, rental);
+        }
+        return false;
+    }
+
+    // TODO: Calculate correct price
+    private Double calculateTotalPrice(Rental rental) {
+        return 1500d;
     }
 
     /**
@@ -74,6 +84,11 @@ public class DefaultCarService implements CarService{
             }
             return false;
         }
+        return true;
+    }
+
+    // TODO: Validate given rental object
+    private Boolean isValidRental(Rental rental) {
         return true;
     }
 }
