@@ -32,6 +32,7 @@ public class CarController {
     TODO: Endpunkte, welche noch gemacht werden müssen
 
     POST 	/api/v1/car/{id}/rental 	--> erstellt eine neue Reservation
+    PUT     /api/v1/car/{id}/rent    	--> Momentan korrekter Endpunkt (Stand 19.05.22): erstellt eine neue Reservation
 
 
     GET 	/api/v1/cars?filter={
@@ -83,7 +84,11 @@ public class CarController {
 
     @PutMapping("/api/v1/car/{id}/rent")
     public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
-        return new ResponseEntity<>(defaultCarService.createRental(id, rental), HttpStatus.OK);
+        Boolean isValid = defaultCarService.createRental(id, rental);
+        if (isValid){
+            return new ResponseEntity<>(isValid, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(isValid, HttpStatus.BAD_REQUEST);
     }
 
 }

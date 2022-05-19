@@ -1,5 +1,7 @@
 package ch.juventus.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class Rental {
@@ -30,4 +32,10 @@ public class Rental {
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    @JsonIgnore
+    public Boolean isValid(){
+            return startDate != null && endDate != null;
+    }
+
 }

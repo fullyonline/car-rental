@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -55,16 +56,28 @@ public class DefaultCarService implements CarService{
     @Override
     public Boolean createRental(Long id, Rental rental) {
         if(isValidRental(rental)){
-            Double totalPrice = calculateTotalPrice(rental);
-            rental.setTotalPrice(totalPrice);
-            return fileCarDatabase.createRental(id, rental);
+            Car selectedCar = null;
+            try {
+                selectedCar = fileCarDatabase.select(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (selectedCar != null) {
+                Double totalPrice = calculateTotalPrice(rental, selectedCar.getPricePerDay());
+                rental.setTotalPrice(totalPrice);
+                return fileCarDatabase.createRental(id, rental);
+            }
         }
         return false;
     }
 
-    // TODO: Calculate correct price
-    private Double calculateTotalPrice(Rental rental) {
-        return 1500d;
+    private Double calculateTotalPrice(Rental rental, Double pricePerDay) {
+        final int wholeDay = 1000 * 60 * 60 * 24;
+        Date startDate = rental.getStartDate();
+        Date endDate = rental.getEndDate();
+        long timeDiff = endDate.getTime() - startDate.getTime();
+        long roundedDaysCount = Math.round((double) timeDiff / wholeDay);
+        return (roundedDaysCount + 1) * pricePerDay;
     }
 
     /**
@@ -87,8 +100,20 @@ public class DefaultCarService implements CarService{
         return true;
     }
 
-    // TODO: Validate given rental object
     private Boolean isValidRental(Rental rental) {
+        if(!rental.isValid()){
+            logger.error("invalid rental object rental{ startDate {}, endDate {}, totalPrice {} }",
+                    rental.getStartDate(), rental.getEndDate(), rental.getTotalPrice());
+
+            // these values must be non-null
+            if(rental.getStartDate() == null){
+                logger.error("startDate can't be null");
+            }
+            if(rental.getEndDate() == null){
+                logger.error("endDate can't be null");
+            }
+            return false;
+        }
         return true;
     }
 }
