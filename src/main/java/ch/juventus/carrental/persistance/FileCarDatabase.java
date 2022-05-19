@@ -8,9 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class FileCarDatabase implements CarDatabase {
@@ -113,8 +116,8 @@ public class FileCarDatabase implements CarDatabase {
         logger.info("select");
         // initialize
         Map<Long, Car> cars = new HashMap<>();
-        File file = new File(fileName);
-        if(file.exists() && file.isFile()){
+        Path p = Paths.get(fileName);
+        if(Files.exists(p)){
             logger.info("file {} exists", fileName);
             try{
                 // create object mapper instance
@@ -124,7 +127,7 @@ public class FileCarDatabase implements CarDatabase {
                 TypeReference<HashMap<Long, Car>> typeRef = new TypeReference<>() {};
 
                 // convert JSON array to list of cars
-                cars = mapper.readValue(file, typeRef);
+                cars = mapper.readValue(p.toFile(), typeRef);
             }
             catch(Exception ex){
                 logger.error(ex.getMessage());
