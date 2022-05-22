@@ -51,6 +51,9 @@ public class DefaultCarService implements CarService{
 
     private List<Car> filterCars(List<Car> cars, CarFilter carFilter) {
         Stream<Car> carsStream = cars.stream();
+
+        carsStream = filterRentalDates(carsStream, carFilter);
+
         if (carFilter.getSearchQuery() != null) {
             carsStream = carsStream.filter(c -> c.getName().contains(carFilter.getSearchQuery()));
         }
@@ -79,8 +82,22 @@ public class DefaultCarService implements CarService{
         return filteredCars;
     }
 
+    private Stream<Car> filterRentalDates(Stream<Car> carsStream, CarFilter carFilter) {
+            if (DateValidator.validate(carFilter.getStartDate(), carFilter.getEndDate()))
+            {
+                carsStream = carsStream.filter(c -> {
+                    boolean isRented = c.getRentaly().stream().anyMatch(
+                            rental -> carFilter.getStartDate().getTime() <= rental.getStartDate().getTime() &&
+                                      rental.getStartDate().getTime() <= carFilter.getEndDate().getTime());
+                    return !isRented;
+                });
+            }
+
+        return carsStream;
+    }
+
     private List<Car> selectCars() {
-        return new ArrayList(fileCarDatabase.select().values());
+        return new ArrayList<>(fileCarDatabase.select().values());
     }
 
     @Override

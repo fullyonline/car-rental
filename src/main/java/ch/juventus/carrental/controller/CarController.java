@@ -40,7 +40,7 @@ public class CarController {
     POST 	/api/v1/car/{id}/rental 	--> erstellt eine neue Reservation
     PUT     /api/v1/car/{id}/rent    	--> Momentan korrekter Endpunkt (Stand 19.05.22): erstellt eine neue Reservation
 
-    TODO: 'com.fasterxml.jackson.datatype.jsr310.JSR310Module' is deprecated
+    TODO: Change Date to LocalDate in Filter-Class
     GET 	/api/v1/cars?filter={
         "startDate" : "",					default: null
             "endDate" : "", 					default: null
@@ -92,7 +92,6 @@ public class CarController {
 
         System.out.println(filter);
         ObjectMapper jacksonMapper = new ObjectMapper();
-        jacksonMapper.registerModule(new JavaTimeModule());
         try {
             CarFilter carFilter = jacksonMapper.readValue(filter, CarFilter.class);
             return new ResponseEntity<>(defaultCarService.getFilteredCars(carFilter), HttpStatus.OK);

@@ -5,15 +5,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public class CarFilter {
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate;
+    private Date startDate;
+    private Date endDate;
     private String searchQuery;
     private List<CarType> type;
     private GearShift gearShift;
@@ -23,7 +20,7 @@ public class CarFilter {
     private Boolean airCondition;
 
     @JsonCreator
-    public CarFilter(@JsonProperty("startDate") LocalDate startDate, @JsonProperty("endDate")  LocalDate endDate,
+    public CarFilter(@JsonProperty("startDate") Date startDate, @JsonProperty("endDate")  Date endDate,
                      @JsonProperty("searchQuery") String searchQuery, @JsonProperty("type") List<CarType> type,
                      @JsonProperty("gearShift") GearShift gearShift, @JsonProperty("minPricePerDay") Double minPricePerDay,
                      @JsonProperty("maxPricePerDay") Double maxPricePerDay, @JsonProperty("seats") List<Integer> seats,
@@ -39,19 +36,19 @@ public class CarFilter {
         this.airCondition = airCondition;
     }
 
-    public LocalDate getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

@@ -2,6 +2,7 @@ package ch.juventus.carrental.persistance;
 
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.Rental;
+import ch.juventus.carrental.service.DateValidator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -144,6 +145,12 @@ public class FileCarDatabase implements CarDatabase {
         logger.info("update rental of car with id {}", carId);
         logger.info("update rental of car with key {} in rental{ startDate {}, endDate {}, totalPrice {} }",
                 carId, rental.getStartDate(), rental.getEndDate(), rental.getTotalPrice());
+
+        if (!DateValidator.validate(rental.getStartDate(), rental.getEndDate())) {
+            logger.error("Invalid dates of rental!");
+            return false;
+        }
+
         Map<Long, Car> cars = select();
         if(cars.containsKey(carId)){
             // adds rental to existingRentals
