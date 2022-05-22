@@ -1,6 +1,8 @@
 package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
+import ch.juventus.carrental.model.CarFilter;
+import ch.juventus.carrental.model.CarType;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
 import ch.juventus.carrental.persistance.FileCarDatabase;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DefaultCarService implements CarService{
@@ -36,6 +40,46 @@ public class DefaultCarService implements CarService{
 
     @Override
     public List<Car> getCars() {
+        return selectCars();
+    }
+
+    @Override
+    public List<Car> getFilteredCars(CarFilter carFilter) {
+        List<Car> cars = selectCars();
+        return filterCars(cars, carFilter);
+    }
+
+    private List<Car> filterCars(List<Car> cars, CarFilter carFilter) {
+        Stream<Car> carsStream = cars.stream();
+        if (carFilter.getSearchQuery() != null) {
+            carsStream = carsStream.filter(c -> c.getName().contains(carFilter.getSearchQuery()));
+        }
+        List<CarType> filterType = carFilter.getType();
+        if (filterType != null) {
+            carsStream = carsStream.filter(c -> filterType.contains(c.getType()));
+        }
+        if (carFilter.getGearShift() != null) {
+            carsStream = carsStream.filter(c -> c.getGearShift() == carFilter.getGearShift());
+        }
+        if (carFilter.getMinPricePerDay() != null) {
+            carsStream = carsStream.filter(c -> c.getPricePerDay() >= carFilter.getMinPricePerDay());
+        }
+        if (carFilter.getMaxPricePerDay() != null) {
+            carsStream = carsStream.filter(c -> c.getPricePerDay() <= carFilter.getMaxPricePerDay());
+        }
+        List<Integer> seatFilter = carFilter.getSeats();
+        if (seatFilter != null) {
+            carsStream = carsStream.filter(c -> seatFilter.contains(c.getSeats()));
+        }
+        if (carFilter.getAirCondition() != null) {
+            carsStream = carsStream.filter(c -> c.getAirCondition() == carFilter.getAirCondition());
+        }
+        List<Car> filteredCars = carsStream.collect(Collectors.toList());
+
+        return filteredCars;
+    }
+
+    private List<Car> selectCars() {
         return new ArrayList(fileCarDatabase.select().values());
     }
 

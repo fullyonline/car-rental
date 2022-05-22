@@ -1,12 +1,17 @@
 package ch.juventus.carrental.controller;
 
 import ch.juventus.carrental.model.Car;
+import ch.juventus.carrental.model.CarFilter;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.service.CarService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,10 +36,11 @@ public class CarController {
     /*
     TODO: Endpunkte, welche noch gemacht werden müssen
 
+    TODO: Change Date to LocalDate in Rental-Class
     POST 	/api/v1/car/{id}/rental 	--> erstellt eine neue Reservation
     PUT     /api/v1/car/{id}/rent    	--> Momentan korrekter Endpunkt (Stand 19.05.22): erstellt eine neue Reservation
 
-
+    TODO: 'com.fasterxml.jackson.datatype.jsr310.JSR310Module' is deprecated
     GET 	/api/v1/cars?filter={
         "startDate" : "",					default: null
             "endDate" : "", 					default: null
@@ -78,17 +84,31 @@ public class CarController {
     }
 
     @GetMapping("/api/v1/cars")
-    public ResponseEntity<List<Car>> GetAllCars(){
-        return new ResponseEntity<>(defaultCarService.getCars(), HttpStatus.OK);
+    public ResponseEntity<List<Car>> getAllCars(@RequestParam(name="filter", required=false) String filter){
+        if (filter == null)
+        {
+            return new ResponseEntity<>(defaultCarService.getCars(), HttpStatus.OK);
+        }
+
+        System.out.println(filter);
+        ObjectMapper jacksonMapper = new ObjectMapper();
+        jacksonMapper.registerModule(new JavaTimeModule());
+        try {
+            CarFilter carFilter = jacksonMapper.readValue(filter, CarFilter.class);
+            return new ResponseEntity<>(defaultCarService.getFilteredCars(carFilter), HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/api/v1/car/{id}/rent")
     public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
         Boolean isValid = defaultCarService.createRental(id, rental);
         if (isValid){
-            return new ResponseEntity<>(isValid, HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        return new ResponseEntity<>(isValid, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
 }
