@@ -155,7 +155,7 @@ public class FileCarDatabase implements CarDatabase {
         if(cars.containsKey(carId)){
             // adds rental to existingRentals
             Car existingCar = cars.get(carId);
-            List<Rental> existingRentals = existingCar.getRentaly();
+            List<Rental> existingRentals = existingCar.getRentals();
             existingRentals.add(rental);
             return writeToFile(cars);
         }

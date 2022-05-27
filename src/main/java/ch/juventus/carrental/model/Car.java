@@ -15,7 +15,7 @@ public class Car {
     private Integer seats;
     private Double pricePerDay;
     private Boolean airCondition;
-    private List<Rental> rentaly; 	// kann als array abgespeichert werden.
+    private List<Rental> rentals;
 
     @JsonCreator
     public Car(@JsonProperty("name") String name,@JsonProperty("type") CarType type, @JsonProperty("gearShift") GearShift gearShift,
@@ -27,10 +27,10 @@ public class Car {
         this.seats = seats;
         this.pricePerDay = pricePerDay;
         this.airCondition = airCondition;
-        this.rentaly = new ArrayList<>();
+        this.rentals = new ArrayList<>();
     }
 
-    public Car(Long id, String name, Enum<CarType> type, Enum<GearShift> gearShift, Integer seats, Double pricePerDay, Boolean airCondition, List<Rental> rentaly) {
+    public Car(Long id, String name, Enum<CarType> type, Enum<GearShift> gearShift, Integer seats, Double pricePerDay, Boolean airCondition, List<Rental> rentals) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -38,7 +38,7 @@ public class Car {
         this.seats = seats;
         this.pricePerDay = pricePerDay;
         this.airCondition = airCondition;
-        this.rentaly = rentaly;
+        this.rentals = rentals;
     }
 
     public Car(){}
@@ -99,12 +99,12 @@ public class Car {
         this.airCondition = airCondition;
     }
 
-    public List<Rental> getRentaly() {
-        return rentaly;
+    public List<Rental> getRentals() {
+        return rentals;
     }
 
-    public void setRentaly(List<Rental> rentaly) {
-        this.rentaly = rentaly;
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
     }
 
     @JsonIgnore

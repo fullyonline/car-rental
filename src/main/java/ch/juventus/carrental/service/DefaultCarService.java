@@ -95,15 +95,16 @@ public class DefaultCarService implements CarService{
     }
 
     private Stream<Car> filterRentalDates(Stream<Car> carsStream, CarFilter carFilter) {
-            if (DateValidator.validate(carFilter.getStartDate(), carFilter.getEndDate()))
-            {
-                carsStream = carsStream.filter(c -> {
-                    boolean isRented = c.getRentaly().stream().anyMatch(
-                            rental -> carFilter.getStartDate().getTime() <= rental.getEndDate().getTime() &&
-                                      rental.getStartDate().getTime() <= carFilter.getEndDate().getTime());
-                    return !isRented;
-                });
-            }
+        // TODO: Check if the date is in the future
+        if (DateValidator.validate(carFilter.getStartDate(), carFilter.getEndDate()))
+        {
+            carsStream = carsStream.filter(c -> {
+                boolean isRented = c.getRentals().stream().anyMatch(
+                        rental -> carFilter.getStartDate().getTime() <= rental.getEndDate().getTime() &&
+                                  rental.getStartDate().getTime() <= carFilter.getEndDate().getTime());
+                return !isRented;
+            });
+        }
 
         return carsStream;
     }
