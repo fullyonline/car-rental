@@ -133,7 +133,7 @@ public class DefaultCarService implements CarService{
             try {
                 selectedCar = fileCarDatabase.select(id);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error(e.getMessage());
             }
             if (selectedCar != null) {
                 Double totalPrice = calculateTotalPrice(rental, selectedCar.getPricePerDay());
