@@ -85,20 +85,7 @@ public class CarController {
 
     @GetMapping("/api/v1/cars")
     public ResponseEntity<List<Car>> getAllCars(@RequestParam(name="filter", required=false) String filter){
-        if (filter == null)
-        {
-            return new ResponseEntity<>(defaultCarService.getCars(), HttpStatus.OK);
-        }
-
-        System.out.println(filter);
-        ObjectMapper jacksonMapper = new ObjectMapper();
-        try {
-            CarFilter carFilter = jacksonMapper.readValue(filter, CarFilter.class);
-            return new ResponseEntity<>(defaultCarService.getFilteredCars(carFilter), HttpStatus.OK);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(defaultCarService.getCars(filter), HttpStatus.OK);
     }
 
     @PutMapping("/api/v1/car/{id}/rent")

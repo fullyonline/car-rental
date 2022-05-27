@@ -10,9 +10,7 @@ public interface CarService {
 
     Boolean createCar(Car car);
 
-    List<Car> getCars();
-
-    List<Car> getFilteredCars(CarFilter carFilter);
+    List<Car> getCars(String filter);
 
     Car getCar(Long id);
 

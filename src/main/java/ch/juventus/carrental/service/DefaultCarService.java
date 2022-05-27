@@ -6,6 +6,8 @@ import ch.juventus.carrental.model.CarType;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
 import ch.juventus.carrental.persistance.FileCarDatabase;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,14 +41,24 @@ public class DefaultCarService implements CarService{
     }
 
     @Override
-    public List<Car> getCars() {
-        return selectCars();
-    }
-
-    @Override
-    public List<Car> getFilteredCars(CarFilter carFilter) {
+    public List<Car> getCars(String filter) {
         List<Car> cars = selectCars();
-        return filterCars(cars, carFilter);
+
+        logger.info("getCars with filter: {}", filter);
+
+        if (filter == null)
+        {
+            return cars;
+        }
+
+        ObjectMapper jacksonMapper = new ObjectMapper();
+        try {
+            CarFilter carFilter = jacksonMapper.readValue(filter, CarFilter.class);
+            return filterCars(cars, carFilter);
+        } catch (JsonProcessingException e) {
+            logger.error(e.getMessage());
+        }
+        return new ArrayList<>();
     }
 
     private List<Car> filterCars(List<Car> cars, CarFilter carFilter) {
