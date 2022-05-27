@@ -99,7 +99,7 @@ public class DefaultCarService implements CarService{
             {
                 carsStream = carsStream.filter(c -> {
                     boolean isRented = c.getRentaly().stream().anyMatch(
-                            rental -> carFilter.getStartDate().getTime() <= rental.getStartDate().getTime() &&
+                            rental -> carFilter.getStartDate().getTime() <= rental.getEndDate().getTime() &&
                                       rental.getStartDate().getTime() <= carFilter.getEndDate().getTime());
                     return !isRented;
                 });
