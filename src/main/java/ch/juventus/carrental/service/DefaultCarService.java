@@ -129,6 +129,7 @@ public class DefaultCarService implements CarService{
 
     @Override
     public Boolean createRental(Long id, Rental rental) {
+        logger.info("createRental");
         if(isValidRental(rental)){
             Car selectedCar = null;
             try {
@@ -139,6 +140,8 @@ public class DefaultCarService implements CarService{
             if (selectedCar != null) {
                 Double totalPrice = calculateTotalPrice(rental, selectedCar.getPricePerDay());
                 rental.setTotalPrice(totalPrice);
+                logger.info("createRental with  with startDate {}, endDate {}, totalPrice {}",
+                        rental.getStartDate(), rental.getEndDate(), rental.getTotalPrice());
                 return fileCarDatabase.createRental(id, rental);
             }
         }
