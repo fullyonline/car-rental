@@ -14,6 +14,8 @@ public class Rental {
         this.endDate = endDate;
     }
 
+    public Rental() {}
+
     public Date getStartDate() {
         return startDate;
     }
