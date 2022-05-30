@@ -9,6 +9,11 @@ public class Rental {
     Date endDate;
     Double totalPrice; // anzahl Tage * PreisProTag
 
+    public Rental(Date startDate, Date endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
