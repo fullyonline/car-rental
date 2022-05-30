@@ -40,7 +40,7 @@ public class Rental {
 
     @JsonIgnore
     public Boolean isValid(){
-            return startDate != null && endDate != null;
+            return startDate != null && endDate != null && startDate.before(endDate);
     }
 
 }
