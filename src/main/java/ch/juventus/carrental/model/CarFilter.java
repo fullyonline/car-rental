@@ -117,7 +117,7 @@ public class CarFilter {
         carsStream = filterRentalDates(carsStream);
 
         if (searchQuery != null) {
-            carsStream = carsStream.filter(c -> c.getName().contains(searchQuery));
+            carsStream = carsStream.filter(c -> c.getName().toLowerCase().contains(searchQuery.toLowerCase()));
         }
         if (type != null) {
             carsStream = carsStream.filter(c -> type.contains(c.getType()));
