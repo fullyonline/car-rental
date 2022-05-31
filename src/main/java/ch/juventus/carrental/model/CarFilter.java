@@ -1,5 +1,6 @@
 package ch.juventus.carrental.model;
 
+import ch.juventus.carrental.service.DateValidator;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,6 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CarFilter {
     private Date startDate;
@@ -107,4 +110,49 @@ public class CarFilter {
     public void setAirCondition(Boolean airCondition) {
         this.airCondition = airCondition;
     }
+
+    public List<Car> filterCars(List<Car> cars) {
+        Stream<Car> carsStream = cars.stream();
+
+        carsStream = filterRentalDates(carsStream);
+
+        if (searchQuery != null) {
+            carsStream = carsStream.filter(c -> c.getName().contains(searchQuery));
+        }
+        if (type != null) {
+            carsStream = carsStream.filter(c -> type.contains(c.getType()));
+        }
+        if (gearShift != null) {
+            carsStream = carsStream.filter(c -> c.getGearShift() == gearShift);
+        }
+        if (minPricePerDay != null) {
+            carsStream = carsStream.filter(c -> c.getPricePerDay() >= minPricePerDay);
+        }
+        if (maxPricePerDay != null) {
+            carsStream = carsStream.filter(c -> c.getPricePerDay() <= maxPricePerDay);
+        }
+        if (seats != null) {
+            carsStream = carsStream.filter(c -> seats.contains(c.getSeats()));
+        }
+        if (airCondition != null) {
+            carsStream = carsStream.filter(c -> c.getAirCondition() == airCondition);
+        }
+        return carsStream.collect(Collectors.toList());
+    }
+
+    private Stream<Car> filterRentalDates(Stream<Car> carsStream) {
+        // TODO: Check if the date is in the future
+        if (DateValidator.validate(startDate, endDate))
+        {
+            carsStream = carsStream.filter(c -> {
+                boolean isRented = c.getRentals().stream().anyMatch(
+                        rental -> startDate.getTime() <= rental.getEndDate().getTime() &&
+                                rental.getStartDate().getTime() <= endDate.getTime());
+                return !isRented;
+            });
+        }
+
+        return carsStream;
+    }
+
 }
