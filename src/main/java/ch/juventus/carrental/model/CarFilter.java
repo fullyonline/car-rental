@@ -39,6 +39,8 @@ public class CarFilter {
         this.airCondition = airCondition;
     }
 
+    public CarFilter(){}
+
     public Date getStartDate() {
         return startDate;
     }
