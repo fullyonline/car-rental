@@ -2,9 +2,7 @@ package ch.juventus.carrental.model;
 
 import ch.juventus.carrental.service.DateValidator;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -38,6 +36,8 @@ public class CarFilter {
         this.seats = seats;
         this.airCondition = airCondition;
     }
+
+    public CarFilter(){}
 
     public Date getStartDate() {
         return startDate;
@@ -117,7 +117,7 @@ public class CarFilter {
         carsStream = filterRentalDates(carsStream);
 
         if (searchQuery != null) {
-            carsStream = carsStream.filter(c -> c.getName().contains(searchQuery));
+            carsStream = carsStream.filter(c -> c.getName().toLowerCase().contains(searchQuery.toLowerCase()));
         }
         if (type != null) {
             carsStream = carsStream.filter(c -> type.contains(c.getType()));

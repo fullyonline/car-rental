@@ -2,7 +2,6 @@ package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.CarFilter;
-import ch.juventus.carrental.model.CarType;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
 import ch.juventus.carrental.persistance.FileCarDatabase;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class DefaultCarService implements CarService{
