@@ -1,17 +1,12 @@
 package ch.juventus.carrental.controller;
 
 import ch.juventus.carrental.model.Car;
-import ch.juventus.carrental.model.CarFilter;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.service.CarService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
