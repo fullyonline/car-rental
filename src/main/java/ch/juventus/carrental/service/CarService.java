@@ -1,7 +1,6 @@
 package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
-import ch.juventus.carrental.model.CarFilter;
 import ch.juventus.carrental.model.Rental;
 
 import java.util.List;
