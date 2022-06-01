@@ -44,7 +44,10 @@ public class CarController {
 
     @PutMapping("/api/v1/car/{id}")
     public ResponseEntity<Boolean> updateCar(@PathVariable(value="id") Long id, @RequestBody Car car){
-        return new ResponseEntity<>(defaultCarService.updateCar(id, car), HttpStatus.OK);
+        if(defaultCarService.updateCar(id, car)){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/api/v1/cars")
