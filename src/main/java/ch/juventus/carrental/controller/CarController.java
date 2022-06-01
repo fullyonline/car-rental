@@ -12,9 +12,6 @@ import java.util.List;
 @RestController
 @CrossOrigin("http://localhost:4200")
 public class CarController {
-
-    // only handle http requests
-
     private final CarService defaultCarService;
 
     public CarController(CarService defaultCarService) {
