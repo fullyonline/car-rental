@@ -21,41 +21,9 @@ public class CarController {
         this.defaultCarService = defaultCarService;
     }
 
-
-    // Lektuere fuer Controller:
-    // https://www.baeldung.com/spring-mvc-custom-property-editor
-    // https://attacomsian.com/blog/jackson-read-write-json
-    // https://www.baeldung.com/spring-boot-json
-
-
     /*
-    TODO: Endpunkte, welche noch gemacht werden müssen
-
     TODO: Change Date to LocalDate in Rental-Class
-    POST 	/api/v1/car/{id}/rental 	--> erstellt eine neue Reservation
-    PUT     /api/v1/car/{id}/rent    	--> Momentan korrekter Endpunkt (Stand 19.05.22): erstellt eine neue Reservation
-
     TODO: Change Date to LocalDate in Filter-Class
-    GET 	/api/v1/cars?filter={
-        "startDate" : "",					default: null
-            "endDate" : "", 					default: null
-            "searchQuery" : "",					default: null
-            "type" : ["", "", ""],				default: null
-            "gearShift" : "",					default: null
-            "minPricePerDay" : "",				default: null
-            "maxPricePerDay" : "",				default: null
-            "seats" : [2, 3, 4],				default: null
-            "airCondition" : true | false,		default: null
-    }
-
-    Fertige Endpunkte:
-
-    GET 	/api/v1/cars 				--> Liefert alle Autos zurück
-    GET 	/api/v1/car/{id} 			--> Liefert ein konkretes Auto zurück
-    PUT 	/api/v1/car/{id} 			--> Dated ein spezifisches Auto ab
-    POST 	/api/v1/car 				--> erstellt ein neues Auto
-    DELETE 	/api/v1/car/{id} 			--> Löscht ein spezifisches Auto
-
     */
 
     @PostMapping("/api/v1/car")
