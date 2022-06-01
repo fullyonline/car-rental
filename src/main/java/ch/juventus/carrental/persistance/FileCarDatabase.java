@@ -108,7 +108,7 @@ public class FileCarDatabase implements CarDatabase {
         if(cars.containsKey(id)){
             return cars.get(id);
         }
-        throw new IllegalArgumentException("No Car with this Id");
+        return null;
     }
 
     @Override

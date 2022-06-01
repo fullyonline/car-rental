@@ -30,7 +30,11 @@ public class CarController {
 
     @GetMapping("/api/v1/car/{id}")
     public ResponseEntity<Car> getCar(@PathVariable(value="id") Long id){
-        return new ResponseEntity<>(defaultCarService.getCar(id), HttpStatus.OK);
+        Car car = defaultCarService.getCar(id);
+        if(car == null){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
     @DeleteMapping("/api/v1/car/{id}")

@@ -83,12 +83,7 @@ public class DefaultCarService implements CarService{
     public Boolean createRental(Long id, Rental rental) {
         logger.info("createRental");
         if(isValidRental(rental)){
-            Car selectedCar = null;
-            try {
-                selectedCar = fileCarDatabase.select(id);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
+            Car selectedCar = fileCarDatabase.select(id);
             if (selectedCar != null) {
                 Double totalPrice = calculateTotalPrice(rental, selectedCar.getPricePerDay());
                 rental.setTotalPrice(totalPrice);
@@ -96,6 +91,7 @@ public class DefaultCarService implements CarService{
                         rental.getStartDate(), rental.getEndDate(), rental.getTotalPrice());
                 return fileCarDatabase.createRental(id, rental);
             }
+            logger.error("no car found with id {}", id);
         }
         return false;
     }
