@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ch.juventus.carrental"},{"l":"ch.juventus.carrental.controller"},{"l":"ch.juventus.carrental.model"},{"l":"ch.juventus.carrental.persistance"},{"l":"ch.juventus.carrental.service"}];updateSearchResults();
