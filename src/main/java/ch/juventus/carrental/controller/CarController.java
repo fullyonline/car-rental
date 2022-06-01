@@ -39,7 +39,10 @@ public class CarController {
 
     @DeleteMapping("/api/v1/car/{id}")
     public ResponseEntity<Boolean> deleteCar(@PathVariable(value="id") Long id){
-        return new ResponseEntity<>(defaultCarService.deleteCar(id), HttpStatus.OK);
+        if(defaultCarService.deleteCar(id)){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/api/v1/car/{id}")
