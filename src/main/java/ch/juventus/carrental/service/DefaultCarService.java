@@ -48,13 +48,17 @@ public class DefaultCarService implements CarService{
         }
 
         ObjectMapper jacksonMapper = new ObjectMapper();
+        CarFilter carFilter;
         try {
-            CarFilter carFilter = jacksonMapper.readValue(filter, CarFilter.class);
-            return carFilter.filterCars(cars);
+            carFilter = jacksonMapper.readValue(filter, CarFilter.class);
         } catch (JsonProcessingException e) {
             logger.error(e.getMessage());
+            return new ArrayList<>();
         }
-        return new ArrayList<>();
+
+        cars = carFilter.filterCars(cars);
+        cars.sort(Comparator.comparing(Car::getPricePerDay));
+        return cars;
     }
 
     private List<Car> selectCars() {
