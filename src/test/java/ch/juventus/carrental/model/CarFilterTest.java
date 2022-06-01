@@ -38,8 +38,6 @@ class CarFilterTest {
             rental3.setEndDate(sdf.parse("02.06.2022"));
             rental4.setStartDate(sdf.parse("21.05.2022"));
             rental4.setEndDate(sdf.parse("02.06.2022"));
-
-
         } catch (ParseException e) {
             // This is a unit test. this works :)
         }
