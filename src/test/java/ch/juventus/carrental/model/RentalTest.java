@@ -34,6 +34,18 @@ class RentalTest {
     }
 
     @Test
+    void rentalIsValidWithSameDay() {
+        try{
+            rental.setStartDate(sdf.parse("29.05.2022"));
+            rental.setEndDate(sdf.parse("29.05.2022"));
+
+        } catch (ParseException e) {
+            // This is a unit test. this works :)
+        }
+        assertTrue(rental.isValid());
+    }
+
+    @Test
     void rentalIsInvalid() {
         try{
             rental.setStartDate(sdf.parse("30.05.2022"));

@@ -1,5 +1,6 @@
 package ch.juventus.carrental.model;
 
+import ch.juventus.carrental.service.DateValidator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
@@ -42,7 +43,7 @@ public class Rental {
 
     @JsonIgnore
     public Boolean isValid(){
-            return startDate != null && endDate != null && startDate.before(endDate);
+        return DateValidator.validate(startDate, endDate);
     }
 
 }
