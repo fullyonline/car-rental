@@ -4,6 +4,7 @@ import ch.juventus.carrental.service.DateValidator;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,6 +113,11 @@ public class CarFilter {
     }
 
     public List<Car> filterCars(List<Car> cars) {
+        if (isInvalidDateFilter())
+        {
+            return new ArrayList<>();
+        }
+
         Stream<Car> carsStream = cars.stream();
 
         carsStream = filterRentalDates(carsStream);
@@ -124,6 +130,10 @@ public class CarFilter {
         carsStream = filterAirCondition(carsStream);
 
         return carsStream.collect(Collectors.toList());
+    }
+
+    private boolean isInvalidDateFilter() {
+        return !DateValidator.validate(startDate, endDate) || !DateValidator.isInTheFuture(startDate);
     }
 
     private Stream<Car> filterName(Stream<Car> carsStream) {
@@ -176,16 +186,12 @@ public class CarFilter {
     }
 
     private Stream<Car> filterRentalDates(Stream<Car> carsStream) {
-        // TODO: Check if the date is in the future
-        if (DateValidator.validate(startDate, endDate))
-        {
-            carsStream = carsStream.filter(c -> {
-                boolean isRented = c.getRentals().stream().anyMatch(
-                        rental -> startDate.getTime() <= rental.getEndDate().getTime() &&
-                                rental.getStartDate().getTime() <= endDate.getTime());
-                return !isRented;
-            });
-        }
+        carsStream = carsStream.filter(c -> {
+            boolean isRented = c.getRentals().stream().anyMatch(
+                    rental -> startDate.getTime() <= rental.getEndDate().getTime() &&
+                            rental.getStartDate().getTime() <= endDate.getTime());
+            return !isRented;
+        });
 
         return carsStream;
     }
