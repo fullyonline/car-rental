@@ -180,7 +180,7 @@ public class CarFilter {
 
     private Stream<Car> filterAirCondition(Stream<Car> carsStream) {
         if (airCondition != null) {
-            carsStream = carsStream.filter(c -> c.getAirCondition() == airCondition);
+            carsStream = carsStream.filter(c -> c.getAirCondition().equals(airCondition));
         }
         return carsStream;
     }
