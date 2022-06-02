@@ -115,29 +115,64 @@ public class CarFilter {
         Stream<Car> carsStream = cars.stream();
 
         carsStream = filterRentalDates(carsStream);
+        carsStream = filterName(carsStream);
+        carsStream = filterCarType(carsStream);
+        carsStream = filterGearShift(carsStream);
+        carsStream = filterMinPricePerDay(carsStream);
+        carsStream = filterMaxPricePerDay(carsStream);
+        carsStream = filterSeats(carsStream);
+        carsStream = filterAirCondition(carsStream);
 
+        return carsStream.collect(Collectors.toList());
+    }
+
+    private Stream<Car> filterName(Stream<Car> carsStream) {
         if (searchQuery != null) {
             carsStream = carsStream.filter(c -> c.getName().toLowerCase().contains(searchQuery.toLowerCase()));
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterCarType(Stream<Car> carsStream) {
         if (type != null) {
             carsStream = carsStream.filter(c -> type.contains(c.getType()));
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterGearShift(Stream<Car> carsStream) {
         if (gearShift != null) {
             carsStream = carsStream.filter(c -> c.getGearShift() == gearShift);
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterMinPricePerDay(Stream<Car> carsStream) {
         if (minPricePerDay != null) {
             carsStream = carsStream.filter(c -> c.getPricePerDay() >= minPricePerDay);
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterMaxPricePerDay(Stream<Car> carsStream) {
         if (maxPricePerDay != null) {
             carsStream = carsStream.filter(c -> c.getPricePerDay() <= maxPricePerDay);
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterSeats(Stream<Car> carsStream) {
         if (seats != null) {
             carsStream = carsStream.filter(c -> seats.contains(c.getSeats()));
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterAirCondition(Stream<Car> carsStream) {
         if (airCondition != null) {
             carsStream = carsStream.filter(c -> c.getAirCondition() == airCondition);
         }
-        return carsStream.collect(Collectors.toList());
+        return carsStream;
     }
 
     private Stream<Car> filterRentalDates(Stream<Car> carsStream) {
