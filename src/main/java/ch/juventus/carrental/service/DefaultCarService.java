@@ -2,6 +2,7 @@ package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.CarFilter;
+import ch.juventus.carrental.model.FilterDto;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
 import ch.juventus.carrental.persistance.FileCarDatabase;
@@ -48,14 +49,15 @@ public class DefaultCarService implements CarService{
         }
 
         ObjectMapper jacksonMapper = new ObjectMapper();
-        CarFilter carFilter;
+        FilterDto filterDto;
         try {
-            carFilter = jacksonMapper.readValue(filter, CarFilter.class);
+            filterDto = jacksonMapper.readValue(filter, FilterDto.class);
         } catch (JsonProcessingException e) {
             logger.error(e.getMessage());
             return new ArrayList<>();
         }
 
+        CarFilter carFilter = new CarFilter(filterDto);
         cars = carFilter.filterCars(cars);
         cars.sort(Comparator.comparing(Car::getPricePerDay));
         return cars;

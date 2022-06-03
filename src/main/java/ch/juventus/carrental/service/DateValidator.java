@@ -2,6 +2,7 @@ package ch.juventus.carrental.service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateValidator {
@@ -14,19 +15,32 @@ public class DateValidator {
     }
 
     private static boolean isValidRange(Date startDate, Date endDate) {
-        return endDate.compareTo(startDate) >= 0;
+        if(startDate != null && endDate != null){
+            return endDate.compareTo(startDate) >= 0;
+        }
+        return false;
     }
 
     public static boolean isInTheFuture(Date givenDate) {
-        Date nowDate = getLocalUtcDate();
-        return isValidRange(nowDate, givenDate);
+        if(givenDate != null) {
+            Date nowDate = getLocalUtcDate();
+            return isValidRange(nowDate, givenDate);
+        }
+        return false;
     }
 
     public static Date getLocalUtcDate() {
         LocalDate now = LocalDate.now();
-        Date nowDate = Date.from(now.atStartOfDay()
+        return Date.from(now.atStartOfDay()
                 .atZone(ZoneId.of("UTC"))
                 .toInstant());
-        return nowDate;
+    }
+
+    public static Date addDays(Date date, int days)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DATE, days); //minus number would decrement the days
+        return cal.getTime();
     }
 }

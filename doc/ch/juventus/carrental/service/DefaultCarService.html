@@ -125,7 +125,7 @@ implements <a href="CarService.html" title="interface in ch.juventus.carrental.s
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCar(java.lang.Long)" class="member-name-link">getCar</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Car.html" title="class in ch.juventus.carrental.model">Car</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCars(java.lang.String)" class="member-name-link">getCars</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;filter)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCars(java.lang.String)" class="member-name-link">getCars</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;filterDto)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Boolean.html" title="class or interface in java.lang" class="external-link">Boolean</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateCar(java.lang.Long,ch.juventus.carrental.model.Car)" class="member-name-link">updateCar</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;id,
@@ -179,14 +179,14 @@ implements <a href="CarService.html" title="interface in ch.juventus.carrental.s
 <li>
 <section class="detail" id="getCars(java.lang.String)">
 <h3>getCars</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Car.html" title="class in ch.juventus.carrental.model">Car</a>&gt;</span>&nbsp;<span class="element-name">getCars</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;filter)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../model/Car.html" title="class in ch.juventus.carrental.model">Car</a>&gt;</span>&nbsp;<span class="element-name">getCars</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;filterDto)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="CarService.html#getCars(java.lang.String)">getCars</a></code>&nbsp;in interface&nbsp;<code><a href="CarService.html" title="interface in ch.juventus.carrental.service">CarService</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>filter</code> - the filter string of the url. could be null.</dd>
+<dd><code>filterDto</code> - the filterDto string of the url. could be null.</dd>
 <dt>Returns:</dt>
-<dd>all cars filtered, if filter is not null. otherwise all cars</dd>
+<dd>all cars filtered, if filterDto is not null. otherwise all cars</dd>
 </dl>
 </section>
 </li>

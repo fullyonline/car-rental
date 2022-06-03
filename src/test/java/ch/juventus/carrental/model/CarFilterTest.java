@@ -11,38 +11,34 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CarFilterTest {
-
-    private SimpleDateFormat sdf;
     List<Car> cars;
-    CarFilter carFilter;
+    FilterDto filterDto;
+
+    Date utcToday;
 
     @BeforeEach
     void beforeEach(){
-        sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMAN);
-        carFilter = new CarFilter();
+        filterDto = new FilterDto();
         cars = new ArrayList<>();
+        utcToday = DateValidator.getLocalUtcDate();
+        filterDto.setStartDate(utcToday);
+        filterDto.setEndDate(utcToday);
 
         Rental rental = new Rental();
         Rental rental2 = new Rental();
         Rental rental3 = new Rental();
         Rental rental4 = new Rental();
 
-        try{
-            Date utcToday = DateValidator.getLocalUtcDate();
-            rental.setStartDate(sdf.parse("29.05.2022"));
-            rental.setEndDate(sdf.parse("30.05.2022"));
-            rental2.setStartDate(sdf.parse("20.05.2022"));
-            rental2.setEndDate(sdf.parse("03.06.2022"));
-//            rental2.setStartDate(utcToday);
-//            rental2.setEndDate(addDays(utcToday, 14));
+        rental.setStartDate(DateValidator.addDays(utcToday, 3));
+        rental.setEndDate(DateValidator.addDays(utcToday, 4));
+        rental2.setStartDate(DateValidator.addDays(utcToday, 6));
+        rental2.setEndDate(DateValidator.addDays(utcToday, 8));
 
-            rental3.setStartDate(sdf.parse("29.05.2022"));
-            rental3.setEndDate(sdf.parse("02.06.2022"));
-            rental4.setStartDate(sdf.parse("21.05.2022"));
-            rental4.setEndDate(sdf.parse("02.06.2022"));
-        } catch (ParseException e) {
-            // This is a unit test. this works :)
-        }
+
+        rental3.setStartDate(DateValidator.addDays(utcToday, 14));
+        rental3.setEndDate(DateValidator.addDays(utcToday, 14));
+        rental4.setStartDate(DateValidator.addDays(utcToday, 15));
+        rental4.setEndDate(DateValidator.addDays(utcToday, 16));
 
         List<Rental> rentals = new ArrayList<>();
         rentals.add(rental);
@@ -59,16 +55,18 @@ class CarFilterTest {
 
     @Test
     void filterCarNameUppercase() {
-        carFilter.setSearchQuery("W");
+        filterDto.setSearchQuery("W");
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(1, result.size());
     }
     @Test
     void filterCarNameLowercase() {
-        carFilter.setSearchQuery("w");
+        filterDto.setSearchQuery("w");
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(1, result.size());
@@ -78,8 +76,9 @@ class CarFilterTest {
         List<CarType> carTypes = new ArrayList<>();
         carTypes.add(CarType.CABRIO);
         carTypes.add(CarType.COUPE);
-        carFilter.setType(carTypes);
+        filterDto.setType(carTypes);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(1, result.size());
@@ -90,64 +89,72 @@ class CarFilterTest {
         carTypes.add(CarType.CABRIO);
         carTypes.add(CarType.LIMOUSINE);
 
-        carFilter.setType(carTypes);
+        filterDto.setType(carTypes);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(2, result.size());
     }
     @Test
     void filterWithGearShift() {
-        carFilter.setGearShift(GearShift.MANUAL);
+        filterDto.setGearShift(GearShift.MANUAL);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(1, result.size());
     }
     @Test
     void filterWithMinPriceTwoResults() {
-        carFilter.setMinPricePerDay(199d);
+        filterDto.setMinPricePerDay(199d);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(2, result.size());
     }
     @Test
     void filterWithMinPriceOneResults() {
-        carFilter.setMinPricePerDay(201d);
+        filterDto.setMinPricePerDay(201d);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(1, result.size());
     }
     @Test
     void filterWithMinPriceNoneResults() {
-        carFilter.setMinPricePerDay(2001d);
+        filterDto.setMinPricePerDay(2001d);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(0, result.size());
     }
     @Test
     void filterWithMaxPriceTwoResults() {
-        carFilter.setMaxPricePerDay(2001d);
+        filterDto.setMaxPricePerDay(2001d);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(2, result.size());
     }
     @Test
     void filterWithMaxPriceOneResults() {
-        carFilter.setMaxPricePerDay(201d);
+        filterDto.setMaxPricePerDay(201d);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(1, result.size());
     }
     @Test
     void filterWithMaxPriceNoneResults() {
-        carFilter.setMaxPricePerDay(199d);
+        filterDto.setMaxPricePerDay(199d);
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
 
         assertEquals(0, result.size());
@@ -158,7 +165,8 @@ class CarFilterTest {
         seats.add(2);
         seats.add(4);
 
-        carFilter.setSeats(seats);
+        filterDto.setSeats(seats);
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(2, result.size());
     }
@@ -168,7 +176,8 @@ class CarFilterTest {
         seats.add(2);
         seats.add(3);
 
-        carFilter.setSeats(seats);
+        filterDto.setSeats(seats);
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(1, result.size());
     }
@@ -178,75 +187,84 @@ class CarFilterTest {
         seats.add(1);
         seats.add(3);
 
-        carFilter.setSeats(seats);
+        filterDto.setSeats(seats);
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(0, result.size());
     }
     @Test
     void filterWithAirconditionTrue() {
-        carFilter.setAirCondition(true);
+        filterDto.setAirCondition(true);
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(1, result.size());
     }
     @Test
     void filterWithAirconditionFalse() {
-        carFilter.setAirCondition(false);
+        filterDto.setAirCondition(false);
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(1, result.size());
     }
     @Test
     void filterWithDatesOneResultBottomEdgecase() {
-        try{
-            carFilter.setStartDate(sdf.parse("19.05.2022"));
-            carFilter.setEndDate(sdf.parse("20.05.2022"));
-        } catch (ParseException e) {
-            // This is a unit test. this works :)
-        }
+        filterDto.setStartDate(DateValidator.addDays(utcToday, 2));
+        filterDto.setEndDate(DateValidator.addDays(utcToday, 3));
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(1, result.size());
     }
     @Test
     void filterWithDatesOneResultTopEdgecase() {
-        try{
-            carFilter.setStartDate(sdf.parse("03.06.2022"));
-            carFilter.setEndDate(sdf.parse("03.06.2022"));
-        } catch (ParseException e) {
-            // This is a unit test. this works :)
-        }
+        filterDto.setStartDate(DateValidator.addDays(utcToday, 8));
+        filterDto.setEndDate(DateValidator.addDays(utcToday, 9));
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(1, result.size());
     }
     @Test
     void filterWithDatesNoResultBottom() {
-        try{
-            carFilter.setStartDate(sdf.parse("03.05.2022"));
-            carFilter.setEndDate(sdf.parse("21.05.2022"));
-        } catch (ParseException e) {
-            // This is a unit test. this works :)
-        }
+        filterDto.setStartDate(DateValidator.addDays(utcToday, 3));
+        filterDto.setEndDate(DateValidator.addDays(utcToday, 14));
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(0, result.size());
     }
     @Test
     void filterWithDatesNoResultTop() {
-        try{
-            carFilter.setStartDate(sdf.parse("22.05.2022"));
-            carFilter.setEndDate(sdf.parse("10.06.2022"));
-        } catch (ParseException e) {
-            // This is a unit test. this works :)
-        }
+        filterDto.setStartDate(DateValidator.addDays(utcToday, 8));
+        filterDto.setEndDate(DateValidator.addDays(utcToday, 16));
 
+        CarFilter carFilter = new CarFilter(filterDto);
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(0, result.size());
     }
+    @Test
+    void filterWithInvalidDates() {
+        filterDto.setStartDate(null);
+        filterDto.setEndDate(null);
 
-    private Date addDays(Date date, int dayCount) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DATE, dayCount);
-        return calendar.getTime();
+        CarFilter carFilter = new CarFilter(filterDto);
+        List<Car> result = carFilter.filterCars(cars);
+        assertEquals(0, result.size());
+    }
+    @Test
+    void filterWithInvalidStartDate() {
+        filterDto.setStartDate(null);
+
+        CarFilter carFilter = new CarFilter(filterDto);
+        List<Car> result = carFilter.filterCars(cars);
+        assertEquals(0, result.size());
+    }
+    @Test
+    void filterWithInvalidEndDate() {
+        filterDto.setEndDate(null);
+
+        CarFilter carFilter = new CarFilter(filterDto);
+        List<Car> result = carFilter.filterCars(cars);
+        assertEquals(0, result.size());
     }
 }
