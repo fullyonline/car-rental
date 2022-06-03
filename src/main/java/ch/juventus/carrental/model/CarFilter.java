@@ -4,6 +4,7 @@ import ch.juventus.carrental.service.DateValidator;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,45 +113,85 @@ public class CarFilter {
     }
 
     public List<Car> filterCars(List<Car> cars) {
+        if (isInvalidDateFilter())
+        {
+            return new ArrayList<>();
+        }
+
         Stream<Car> carsStream = cars.stream();
 
         carsStream = filterRentalDates(carsStream);
+        carsStream = filterName(carsStream);
+        carsStream = filterCarType(carsStream);
+        carsStream = filterGearShift(carsStream);
+        carsStream = filterMinPricePerDay(carsStream);
+        carsStream = filterMaxPricePerDay(carsStream);
+        carsStream = filterSeats(carsStream);
+        carsStream = filterAirCondition(carsStream);
 
-        if (searchQuery != null) {
-            carsStream = carsStream.filter(c -> c.getName().toLowerCase().contains(searchQuery.toLowerCase()));
-        }
-        if (type != null) {
-            carsStream = carsStream.filter(c -> type.contains(c.getType()));
-        }
-        if (gearShift != null) {
-            carsStream = carsStream.filter(c -> c.getGearShift() == gearShift);
-        }
-        if (minPricePerDay != null) {
-            carsStream = carsStream.filter(c -> c.getPricePerDay() >= minPricePerDay);
-        }
-        if (maxPricePerDay != null) {
-            carsStream = carsStream.filter(c -> c.getPricePerDay() <= maxPricePerDay);
-        }
-        if (seats != null) {
-            carsStream = carsStream.filter(c -> seats.contains(c.getSeats()));
-        }
-        if (airCondition != null) {
-            carsStream = carsStream.filter(c -> c.getAirCondition() == airCondition);
-        }
         return carsStream.collect(Collectors.toList());
     }
 
-    private Stream<Car> filterRentalDates(Stream<Car> carsStream) {
-        // TODO: Check if the date is in the future
-        if (DateValidator.validate(startDate, endDate))
-        {
-            carsStream = carsStream.filter(c -> {
-                boolean isRented = c.getRentals().stream().anyMatch(
-                        rental -> startDate.getTime() <= rental.getEndDate().getTime() &&
-                                rental.getStartDate().getTime() <= endDate.getTime());
-                return !isRented;
-            });
+    private boolean isInvalidDateFilter() {
+        return !DateValidator.validate(startDate, endDate) || !DateValidator.isInTheFuture(startDate);
+    }
+
+    private Stream<Car> filterName(Stream<Car> carsStream) {
+        if (searchQuery != null) {
+            carsStream = carsStream.filter(c -> c.getName().toLowerCase().contains(searchQuery.toLowerCase()));
         }
+        return carsStream;
+    }
+
+    private Stream<Car> filterCarType(Stream<Car> carsStream) {
+        if (type != null) {
+            carsStream = carsStream.filter(c -> type.contains(c.getType()));
+        }
+        return carsStream;
+    }
+
+    private Stream<Car> filterGearShift(Stream<Car> carsStream) {
+        if (gearShift != null) {
+            carsStream = carsStream.filter(c -> c.getGearShift() == gearShift);
+        }
+        return carsStream;
+    }
+
+    private Stream<Car> filterMinPricePerDay(Stream<Car> carsStream) {
+        if (minPricePerDay != null) {
+            carsStream = carsStream.filter(c -> c.getPricePerDay() >= minPricePerDay);
+        }
+        return carsStream;
+    }
+
+    private Stream<Car> filterMaxPricePerDay(Stream<Car> carsStream) {
+        if (maxPricePerDay != null) {
+            carsStream = carsStream.filter(c -> c.getPricePerDay() <= maxPricePerDay);
+        }
+        return carsStream;
+    }
+
+    private Stream<Car> filterSeats(Stream<Car> carsStream) {
+        if (seats != null) {
+            carsStream = carsStream.filter(c -> seats.contains(c.getSeats()));
+        }
+        return carsStream;
+    }
+
+    private Stream<Car> filterAirCondition(Stream<Car> carsStream) {
+        if (airCondition != null) {
+            carsStream = carsStream.filter(c -> c.getAirCondition().equals(airCondition));
+        }
+        return carsStream;
+    }
+
+    private Stream<Car> filterRentalDates(Stream<Car> carsStream) {
+        carsStream = carsStream.filter(c -> {
+            boolean isRented = c.getRentals().stream().anyMatch(
+                    rental -> startDate.getTime() <= rental.getEndDate().getTime() &&
+                            rental.getStartDate().getTime() <= endDate.getTime());
+            return !isRented;
+        });
 
         return carsStream;
     }

@@ -1,13 +1,12 @@
 package ch.juventus.carrental.model;
 
+import ch.juventus.carrental.service.DateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,10 +28,13 @@ class CarFilterTest {
         Rental rental4 = new Rental();
 
         try{
+            Date utcToday = DateValidator.getLocalUtcDate();
             rental.setStartDate(sdf.parse("29.05.2022"));
             rental.setEndDate(sdf.parse("30.05.2022"));
             rental2.setStartDate(sdf.parse("20.05.2022"));
             rental2.setEndDate(sdf.parse("03.06.2022"));
+//            rental2.setStartDate(utcToday);
+//            rental2.setEndDate(addDays(utcToday, 14));
 
             rental3.setStartDate(sdf.parse("29.05.2022"));
             rental3.setEndDate(sdf.parse("02.06.2022"));
@@ -239,5 +241,12 @@ class CarFilterTest {
 
         List<Car> result = carFilter.filterCars(cars);
         assertEquals(0, result.size());
+    }
+
+    private Date addDays(Date date, int dayCount) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, dayCount);
+        return calendar.getTime();
     }
 }
