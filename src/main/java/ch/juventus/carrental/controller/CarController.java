@@ -61,7 +61,7 @@ public class CarController {
         return new ResponseEntity<>(defaultCarService.createCar(car), HttpStatus.OK);
     }
 
-    @PutMapping("/api/v1/car/{id}/rent")
+    @PostMapping("/api/v1/car/{id}/rental")
     @Operation(summary="Creates a new rental entry on the car with the given ID.", responses = {
             @ApiResponse(description = "Success", responseCode = "200",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
