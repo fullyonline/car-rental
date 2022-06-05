@@ -54,7 +54,12 @@ public class CarController {
     }
 
     @DeleteMapping("/api/v1/car/{id}")
-    @Operation(summary="Deletes the car with the given ID. Response status 404 if no car with this ID exists.")
+    @Operation(summary="Deletes the car with the given ID.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(description = "No car with this ID exists.", responseCode = "404",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+    })
     public ResponseEntity<Boolean> deleteCar(@PathVariable(value="id") Long id){
         if(defaultCarService.deleteCar(id)){
             return new ResponseEntity<>(true, HttpStatus.OK);
@@ -63,7 +68,12 @@ public class CarController {
     }
 
     @PutMapping("/api/v1/car/{id}")
-    @Operation(summary="Overwrites the car with the given ID. Response status 404 if no car with this ID exists.")
+    @Operation(summary="Overwrites the car with the given ID.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(description = "No car with this ID exists.", responseCode = "404",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+    })
     public ResponseEntity<Boolean> updateCar(@PathVariable(value="id") Long id, @RequestBody Car car){
         if(defaultCarService.updateCar(id, car)){
             return new ResponseEntity<>(true, HttpStatus.OK);
@@ -72,13 +82,20 @@ public class CarController {
     }
 
     @GetMapping("/api/v1/cars")
-    @Operation(summary="Returns all saved cars. If a filter object is passed, the cars will be filtered accordingly.")
+    @Operation(summary="Returns all saved cars. If a filter object is passed, the cars will be filtered accordingly.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200")
+    })
     public ResponseEntity<List<Car>> getAllCars(@RequestParam(name="filter", required=false) String filter){
         return new ResponseEntity<>(defaultCarService.getCars(filter), HttpStatus.OK);
     }
 
     @PutMapping("/api/v1/car/{id}/rent")
-    @Operation(summary="Creates a new rental entry on the car with the given ID. Response status 400 if no car with this ID exists.")
+    @Operation(summary="Creates a new rental entry on the car with the given ID.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(description = "No car with this ID exists.", responseCode = "400",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+    })
     public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
         Boolean isValid = defaultCarService.createRental(id, rental);
         if (isValid){
