@@ -5,6 +5,8 @@ import ch.juventus.carrental.service.CarFilterEvaluator;
 import ch.juventus.carrental.service.DateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.*;
 
@@ -105,106 +107,45 @@ class CarFilterEvaluatorTest {
 
         assertEquals(1, result.size());
     }
-    @Test
-    void filterWithMinPriceTwoResults() {
-        filterDto.setMinPricePerDay(199d);
+    @ParameterizedTest
+    @CsvSource({"199,2", "201,1", "2001,0"})
+    void filterWithMinPrice(double minPricePerDay, int resultSize) {
+        filterDto.setMinPricePerDay(minPricePerDay);
 
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
 
-        assertEquals(2, result.size());
+        assertEquals(resultSize, result.size());
     }
-    @Test
-    void filterWithMinPriceOneResults() {
-        filterDto.setMinPricePerDay(201d);
+    @ParameterizedTest
+    @CsvSource({"2001,2", "201,1", "199,0"})
+    void filterWithMaxPrice(double maxPricePerDay, int resultSize) {
+        filterDto.setMaxPricePerDay(maxPricePerDay);
 
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
 
-        assertEquals(1, result.size());
+        assertEquals(resultSize, result.size());
     }
-    @Test
-    void filterWithMinPriceNoneResults() {
-        filterDto.setMinPricePerDay(2001d);
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-
-        assertEquals(0, result.size());
-    }
-    @Test
-    void filterWithMaxPriceTwoResults() {
-        filterDto.setMaxPricePerDay(2001d);
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-
-        assertEquals(2, result.size());
-    }
-    @Test
-    void filterWithMaxPriceOneResults() {
-        filterDto.setMaxPricePerDay(201d);
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-
-        assertEquals(1, result.size());
-    }
-    @Test
-    void filterWithMaxPriceNoneResults() {
-        filterDto.setMaxPricePerDay(199d);
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-
-        assertEquals(0, result.size());
-    }
-    @Test
-    void filterWithSeatsTwoResult() {
+    @ParameterizedTest
+    @CsvSource({"2,4,2", "2,3,1", "1,3,0"})
+    void filterWithSeats(int seatCount1, int seatCount2, int resultSize) {
         List<Integer> seats = new ArrayList<>();
-        seats.add(2);
-        seats.add(4);
+        seats.add(seatCount1);
+        seats.add(seatCount2);
 
         filterDto.setSeats(seats);
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(2, result.size());
+        assertEquals(resultSize, result.size());
     }
-    @Test
-    void filterWithSeatsOneResult() {
-        List<Integer> seats = new ArrayList<>();
-        seats.add(2);
-        seats.add(3);
-
-        filterDto.setSeats(seats);
+    @ParameterizedTest
+    @CsvSource({"true,1", "false,1"})
+    void filterWithAircondition(boolean airCondition, int resultSize) {
+        filterDto.setAirCondition(airCondition);
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(1, result.size());
-    }
-    @Test
-    void filterWithSeatsNoneResult() {
-        List<Integer> seats = new ArrayList<>();
-        seats.add(1);
-        seats.add(3);
-
-        filterDto.setSeats(seats);
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(0, result.size());
-    }
-    @Test
-    void filterWithAirconditionTrue() {
-        filterDto.setAirCondition(true);
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(1, result.size());
-    }
-    @Test
-    void filterWithAirconditionFalse() {
-        filterDto.setAirCondition(false);
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(1, result.size());
+        assertEquals(resultSize, result.size());
     }
     @Test
     void filterWithDatesOneResultBottomEdgecase() {
