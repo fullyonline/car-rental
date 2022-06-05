@@ -1,7 +1,6 @@
 package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
-import ch.juventus.carrental.model.CarFilter;
 import ch.juventus.carrental.model.FilterDto;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
@@ -57,8 +56,8 @@ public class DefaultCarService implements CarService{
             return new ArrayList<>();
         }
 
-        CarFilter carFilter = new CarFilter(filterDto);
-        cars = carFilter.filterCars(cars);
+        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
+        cars = carFilterEvaluator.filterCars(cars);
         cars.sort(Comparator.comparing(Car::getPricePerDay));
         return cars;
     }
