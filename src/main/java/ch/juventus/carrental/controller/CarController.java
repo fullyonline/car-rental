@@ -4,6 +4,9 @@ import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.service.CarService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,13 +30,21 @@ public class CarController {
     */
 
     @PostMapping("/api/v1/car")
-    @Operation(summary="Creates a new car.")
+    @Operation(summary="Creates a new car.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+    })
     public ResponseEntity<Boolean> createCar(@RequestBody Car car){
         return new ResponseEntity<>(defaultCarService.createCar(car), HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/car/{id}")
-    @Operation(summary="Returns the car with the given ID. Response status 404 if no car with this ID exists.")
+    @Operation(summary="Returns the car with the given ID.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Car.class))),
+            @ApiResponse(description = "No car with this ID exists.", responseCode = "404",
+                    content = @Content)
+    })
     public ResponseEntity<Car> getCar(@PathVariable(value="id") Long id){
         Car car = defaultCarService.getCar(id);
         if(car == null){
