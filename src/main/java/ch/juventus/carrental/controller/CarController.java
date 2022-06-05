@@ -3,6 +3,8 @@ package ch.juventus.carrental.controller;
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.service.CarService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
+@Tag(name="Car")
 public class CarController {
     private final CarService defaultCarService;
 
@@ -24,11 +27,13 @@ public class CarController {
     */
 
     @PostMapping("/api/v1/car")
+    @Operation(summary="Creates a new car.")
     public ResponseEntity<Boolean> createCar(@RequestBody Car car){
         return new ResponseEntity<>(defaultCarService.createCar(car), HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/car/{id}")
+    @Operation(summary="Returns the car with the given ID. Response status 404 if no car with this ID exists.")
     public ResponseEntity<Car> getCar(@PathVariable(value="id") Long id){
         Car car = defaultCarService.getCar(id);
         if(car == null){
@@ -38,6 +43,7 @@ public class CarController {
     }
 
     @DeleteMapping("/api/v1/car/{id}")
+    @Operation(summary="Deletes the car with the given ID. Response status 404 if no car with this ID exists.")
     public ResponseEntity<Boolean> deleteCar(@PathVariable(value="id") Long id){
         if(defaultCarService.deleteCar(id)){
             return new ResponseEntity<>(true, HttpStatus.OK);
@@ -46,6 +52,7 @@ public class CarController {
     }
 
     @PutMapping("/api/v1/car/{id}")
+    @Operation(summary="Overwrites the car with the given ID. Response status 404 if no car with this ID exists.")
     public ResponseEntity<Boolean> updateCar(@PathVariable(value="id") Long id, @RequestBody Car car){
         if(defaultCarService.updateCar(id, car)){
             return new ResponseEntity<>(true, HttpStatus.OK);
@@ -54,11 +61,13 @@ public class CarController {
     }
 
     @GetMapping("/api/v1/cars")
+    @Operation(summary="Returns all saved cars. If a filter object is passed, the cars will be filtered accordingly.")
     public ResponseEntity<List<Car>> getAllCars(@RequestParam(name="filter", required=false) String filter){
         return new ResponseEntity<>(defaultCarService.getCars(filter), HttpStatus.OK);
     }
 
     @PutMapping("/api/v1/car/{id}/rent")
+    @Operation(summary="Creates a new rental entry on the car with the given ID. Response status 400 if no car with this ID exists.")
     public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
         Boolean isValid = defaultCarService.createRental(id, rental);
         if (isValid){
