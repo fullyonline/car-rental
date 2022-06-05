@@ -29,13 +29,12 @@ public class CarController {
     TODO: Change Date to LocalDate in Filter-Class
     */
 
-    @PostMapping("/api/v1/car")
-    @Operation(summary="Creates a new car.", responses = {
-            @ApiResponse(description = "Success", responseCode = "200",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+    @GetMapping("/api/v1/cars")
+    @Operation(summary="Returns all saved cars. If a filter object is passed, the cars will be filtered accordingly.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200")
     })
-    public ResponseEntity<Boolean> createCar(@RequestBody Car car){
-        return new ResponseEntity<>(defaultCarService.createCar(car), HttpStatus.OK);
+    public ResponseEntity<List<Car>> getAllCars(@RequestParam(name="filter", required=false) String filter){
+        return new ResponseEntity<>(defaultCarService.getCars(filter), HttpStatus.OK);
     }
 
     @GetMapping("/api/v1/car/{id}")
@@ -53,18 +52,28 @@ public class CarController {
         return new ResponseEntity<>(car, HttpStatus.OK);
     }
 
-    @DeleteMapping("/api/v1/car/{id}")
-    @Operation(summary="Deletes the car with the given ID.", responses = {
+    @PostMapping("/api/v1/car")
+    @Operation(summary="Creates a new car.", responses = {
             @ApiResponse(description = "Success", responseCode = "200",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(description = "No car with this ID exists.", responseCode = "404",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
     })
-    public ResponseEntity<Boolean> deleteCar(@PathVariable(value="id") Long id){
-        if(defaultCarService.deleteCar(id)){
+    public ResponseEntity<Boolean> createCar(@RequestBody Car car){
+        return new ResponseEntity<>(defaultCarService.createCar(car), HttpStatus.OK);
+    }
+
+    @PutMapping("/api/v1/car/{id}/rent")
+    @Operation(summary="Creates a new rental entry on the car with the given ID.", responses = {
+            @ApiResponse(description = "Success", responseCode = "200",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(description = "No car with this ID exists.", responseCode = "400",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
+    })
+    public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
+        Boolean isValid = defaultCarService.createRental(id, rental);
+        if (isValid){
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/api/v1/car/{id}")
@@ -81,27 +90,18 @@ public class CarController {
         return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/api/v1/cars")
-    @Operation(summary="Returns all saved cars. If a filter object is passed, the cars will be filtered accordingly.", responses = {
-            @ApiResponse(description = "Success", responseCode = "200")
-    })
-    public ResponseEntity<List<Car>> getAllCars(@RequestParam(name="filter", required=false) String filter){
-        return new ResponseEntity<>(defaultCarService.getCars(filter), HttpStatus.OK);
-    }
-
-    @PutMapping("/api/v1/car/{id}/rent")
-    @Operation(summary="Creates a new rental entry on the car with the given ID.", responses = {
+    @DeleteMapping("/api/v1/car/{id}")
+    @Operation(summary="Deletes the car with the given ID.", responses = {
             @ApiResponse(description = "Success", responseCode = "200",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))),
-            @ApiResponse(description = "No car with this ID exists.", responseCode = "400",
+            @ApiResponse(description = "No car with this ID exists.", responseCode = "404",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
     })
-    public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
-        Boolean isValid = defaultCarService.createRental(id, rental);
-        if (isValid){
+    public ResponseEntity<Boolean> deleteCar(@PathVariable(value="id") Long id){
+        if(defaultCarService.deleteCar(id)){
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(false, HttpStatus.NOT_FOUND);
     }
 
 }
