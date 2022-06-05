@@ -69,7 +69,7 @@ public class CarController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class)))
     })
     public ResponseEntity<Boolean> createRental(@PathVariable(value="id") Long id, @RequestBody Rental rental){
-        Boolean isValid = defaultCarService.createRental(id, rental);
+        boolean isValid = defaultCarService.createRental(id, rental);
         if (isValid){
             return new ResponseEntity<>(true, HttpStatus.OK);
         }

@@ -2,7 +2,6 @@ package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.FilterDto;
-import ch.juventus.carrental.service.DateValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.stream.Stream;
 
 public class CarFilterEvaluator {
 
-    private FilterDto filterDto;
+    private final FilterDto filterDto;
 
     public CarFilterEvaluator(FilterDto filterDto){
         this.filterDto = filterDto;

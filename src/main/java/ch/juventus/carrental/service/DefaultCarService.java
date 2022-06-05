@@ -4,7 +4,6 @@ import ch.juventus.carrental.model.Car;
 import ch.juventus.carrental.model.FilterDto;
 import ch.juventus.carrental.model.Rental;
 import ch.juventus.carrental.persistance.CarDatabase;
-import ch.juventus.carrental.persistance.FileCarDatabase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ public class DefaultCarService implements CarService{
     // implements business logic
 
     private final CarDatabase fileCarDatabase;
-    final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
+    final Logger logger = LoggerFactory.getLogger(DefaultCarService.class);
 
     public DefaultCarService(CarDatabase fileCarDatabase) {
         this.fileCarDatabase = fileCarDatabase;
@@ -70,7 +69,7 @@ public class DefaultCarService implements CarService{
     public Car getCar(Long id) { return fileCarDatabase.select(id); }
 
     @Override
-    public Boolean updateCar(Long id, Car car) {
+    public boolean updateCar(Long id, Car car) {
         if(isValidCar(car)){
             return fileCarDatabase.update(id, car);
         }
@@ -78,10 +77,10 @@ public class DefaultCarService implements CarService{
     }
 
     @Override
-    public Boolean deleteCar(Long id) { return fileCarDatabase.delete(id); }
+    public boolean deleteCar(Long id) { return fileCarDatabase.delete(id); }
 
     @Override
-    public Boolean createRental(Long id, Rental rental) {
+    public boolean createRental(Long id, Rental rental) {
         logger.info("createRental");
         if(isValidRental(rental)){
             Car selectedCar = fileCarDatabase.select(id);
@@ -109,7 +108,7 @@ public class DefaultCarService implements CarService{
     /**
      * Helper
      */
-    private Boolean isValidCar(Car car){
+    private boolean isValidCar(Car car){
         if(!car.isValid()){
             logger.error("invalid car object car{ id {}, name {}, type {}, gearShift {}, seats {}, pricePerDay {}, airCondition {} }",
                     car.getId(), car.getName(), car.getType(), car.getGearShift(), car.getSeats(), car.getPricePerDay(), car.getAirCondition());
@@ -126,7 +125,7 @@ public class DefaultCarService implements CarService{
         return true;
     }
 
-    private Boolean isValidRental(Rental rental) {
+    private boolean isValidRental(Rental rental) {
         if(!rental.isValid()){
             logger.error("invalid rental object rental{ startDate {}, endDate {}, totalPrice {} }",
                     rental.getStartDate(), rental.getEndDate(), rental.getTotalPrice());

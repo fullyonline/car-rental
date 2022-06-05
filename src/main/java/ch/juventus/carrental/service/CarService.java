@@ -34,14 +34,14 @@ public interface CarService {
      * @param car the updated car object
      * @return if the update was successful
      */
-    Boolean updateCar(Long id, Car car);
+    boolean updateCar(Long id, Car car);
 
     /**
      *
      * @param id of the car to delete
      * @return if the delete was successful
      */
-    Boolean deleteCar(Long id);
+    boolean deleteCar(Long id);
 
     /**
      *
@@ -49,5 +49,5 @@ public interface CarService {
      * @param rental the new rental of the car
      * @return if the creation of the new rental was successful
      */
-    Boolean createRental(Long id, Rental rental);
+    boolean createRental(Long id, Rental rental);
 }

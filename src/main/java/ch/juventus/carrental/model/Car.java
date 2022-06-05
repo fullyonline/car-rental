@@ -108,7 +108,7 @@ public class Car {
     }
 
     @JsonIgnore
-    public Boolean isValid(){
+    public boolean isValid(){
         return gearShift != null && airCondition != null && seats != null && type != null &&
                 pricePerDay != null && pricePerDay > 0 && seats > 0;
     }

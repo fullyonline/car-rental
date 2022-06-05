@@ -42,7 +42,7 @@ public class Rental {
     }
 
     @JsonIgnore
-    public Boolean isValid(){
+    public boolean isValid(){
         return DateValidator.validate(startDate, endDate);
     }
 

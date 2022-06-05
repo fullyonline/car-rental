@@ -22,12 +22,12 @@ public class FileCarDatabase implements CarDatabase {
     final Logger logger = LoggerFactory.getLogger(FileCarDatabase.class);
     private Long highestGivenId;
 
-    private final String fileName = "src\\main\\resources\\static\\database.json";
+    private static final String FILE_NAME = "src\\main\\resources\\static\\database.json";
 
     // read / write data
 
     public FileCarDatabase(){
-        highestGivenId  = Long.valueOf(0);
+        highestGivenId  = 0L;
     }
 
     private Boolean writeToFile(Map<Long, Car> cars){
@@ -36,7 +36,7 @@ public class FileCarDatabase implements CarDatabase {
             ObjectMapper mapper = new ObjectMapper();
 
             // convert book map to JSON file
-            mapper.writeValue(Paths.get(fileName).toFile(), cars);
+            mapper.writeValue(Paths.get(FILE_NAME).toFile(), cars);
             return true;
         }
         catch(Exception ex){
@@ -117,9 +117,9 @@ public class FileCarDatabase implements CarDatabase {
         logger.info("select");
         // initialize
         Map<Long, Car> cars = new HashMap<>();
-        Path p = Paths.get(fileName);
+        Path p = Paths.get(FILE_NAME);
         if(Files.exists(p)){
-            logger.info("file {} exists", fileName);
+            logger.info("file {} exists", FILE_NAME);
             try{
                 // create object mapper instance
                 ObjectMapper mapper = new ObjectMapper();
@@ -135,7 +135,7 @@ public class FileCarDatabase implements CarDatabase {
             }
         }
         else {
-            logger.info("file {} does not exist", fileName);
+            logger.info("file {} does not exist", FILE_NAME);
         }
         return cars;
     }

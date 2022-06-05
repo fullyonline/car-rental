@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateValidator {
+    private DateValidator() { }
+
     public static boolean validate(Date startDate, Date endDate) {
         if (startDate != null && endDate != null)
         {
