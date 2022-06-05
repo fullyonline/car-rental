@@ -1,8 +1,6 @@
 package ch.juventus.carrental.service;
 
 import ch.juventus.carrental.model.*;
-import ch.juventus.carrental.service.CarFilterEvaluator;
-import ch.juventus.carrental.service.DateValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -57,47 +55,50 @@ class CarFilterEvaluatorTest {
 
     @Test
     void filterCarNameUppercase() {
-        filterDto.setSearchQuery("W");
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-
-        assertEquals(1, result.size());
+        filterCarName("W");
     }
+
     @Test
     void filterCarNameLowercase() {
-        filterDto.setSearchQuery("w");
+        filterCarName("w");
+    }
+
+    private void filterCarName(String searchQuery) {
+        filterDto.setSearchQuery(searchQuery);
 
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
 
         assertEquals(1, result.size());
     }
+
     @Test
     void filterWithCarTypeAndGetOneResult() {
         List<CarType> carTypes = new ArrayList<>();
         carTypes.add(CarType.CABRIO);
         carTypes.add(CarType.COUPE);
-        filterDto.setType(carTypes);
 
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-
-        assertEquals(1, result.size());
+        filterWithCarType(carTypes, 1);
     }
+
     @Test
     void filterWithCarTypeAndGetTwoResult() {
         List<CarType> carTypes = new ArrayList<>();
         carTypes.add(CarType.CABRIO);
         carTypes.add(CarType.LIMOUSINE);
 
+        filterWithCarType(carTypes, 2);
+    }
+
+    private void filterWithCarType(List<CarType> carTypes, int resultSize) {
         filterDto.setType(carTypes);
 
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
 
-        assertEquals(2, result.size());
+        assertEquals(resultSize, result.size());
     }
+
     @Test
     void filterWithGearShift() {
         filterDto.setGearShift(GearShift.MANUAL);
@@ -107,6 +108,7 @@ class CarFilterEvaluatorTest {
 
         assertEquals(1, result.size());
     }
+
     @ParameterizedTest
     @CsvSource({"199,2", "201,1", "2001,0"})
     void filterWithMinPrice(double minPricePerDay, int resultSize) {
@@ -117,6 +119,7 @@ class CarFilterEvaluatorTest {
 
         assertEquals(resultSize, result.size());
     }
+
     @ParameterizedTest
     @CsvSource({"2001,2", "201,1", "199,0"})
     void filterWithMaxPrice(double maxPricePerDay, int resultSize) {
@@ -127,6 +130,7 @@ class CarFilterEvaluatorTest {
 
         assertEquals(resultSize, result.size());
     }
+
     @ParameterizedTest
     @CsvSource({"2,4,2", "2,3,1", "1,3,0"})
     void filterWithSeats(int seatCount1, int seatCount2, int resultSize) {
@@ -139,6 +143,7 @@ class CarFilterEvaluatorTest {
         List<Car> result = carFilterEvaluator.filterCars(cars);
         assertEquals(resultSize, result.size());
     }
+
     @ParameterizedTest
     @CsvSource({"true,1", "false,1"})
     void filterWithAircondition(boolean airCondition, int resultSize) {
@@ -147,63 +152,69 @@ class CarFilterEvaluatorTest {
         List<Car> result = carFilterEvaluator.filterCars(cars);
         assertEquals(resultSize, result.size());
     }
+
     @Test
     void filterWithDatesOneResultBottomEdgecase() {
-        filterDto.setStartDate(DateValidator.addDays(utcToday, 2));
-        filterDto.setEndDate(DateValidator.addDays(utcToday, 3));
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(1, result.size());
+        Date filterStartDate = DateValidator.addDays(this.utcToday, 2);
+        Date filterEndDate = DateValidator.addDays(this.utcToday, 3);
+        int resultSize = 1;
+        filterWithDates(filterStartDate, filterEndDate, resultSize);
     }
+
     @Test
     void filterWithDatesOneResultTopEdgecase() {
-        filterDto.setStartDate(DateValidator.addDays(utcToday, 8));
-        filterDto.setEndDate(DateValidator.addDays(utcToday, 9));
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(1, result.size());
+        Date filterStartDate = DateValidator.addDays(utcToday, 8);
+        Date filterEndDate = DateValidator.addDays(utcToday, 9);
+        int resultSize = 1;
+        filterWithDates(filterStartDate, filterEndDate, resultSize);
     }
+
     @Test
     void filterWithDatesNoResultBottom() {
-        filterDto.setStartDate(DateValidator.addDays(utcToday, 3));
-        filterDto.setEndDate(DateValidator.addDays(utcToday, 14));
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(0, result.size());
+        Date filterStartDate = DateValidator.addDays(utcToday, 3);
+        Date filterEndDate = DateValidator.addDays(utcToday, 14);
+        int resultSize = 0;
+        filterWithDates(filterStartDate, filterEndDate, resultSize);
     }
+
     @Test
     void filterWithDatesNoResultTop() {
-        filterDto.setStartDate(DateValidator.addDays(utcToday, 8));
-        filterDto.setEndDate(DateValidator.addDays(utcToday, 16));
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(0, result.size());
+        Date filterStartDate = DateValidator.addDays(utcToday, 8);
+        Date filterEndDate = DateValidator.addDays(utcToday, 16);
+        int resultSize = 0;
+        filterWithDates(filterStartDate, filterEndDate, resultSize);
     }
+
     @Test
     void filterWithInvalidDates() {
-        filterDto.setStartDate(null);
-        filterDto.setEndDate(null);
+        Date filterStartDate = null;
+        Date filterEndDate = null;
+        int resultSize = 0;
+        filterWithDates(filterStartDate, filterEndDate, resultSize);
+    }
+
+    private void filterWithDates(Date filterStartDate, Date filterEndDate, int resultSize) {
+        filterDto.setStartDate(filterStartDate);
+        filterDto.setEndDate(filterEndDate);
 
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(0, result.size());
+        assertEquals(resultSize, result.size());
     }
+    
     @Test
     void filterWithInvalidStartDate() {
         filterDto.setStartDate(null);
-
-        CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
-        List<Car> result = carFilterEvaluator.filterCars(cars);
-        assertEquals(0, result.size());
+        filterWithInvalidDate();
     }
+
     @Test
     void filterWithInvalidEndDate() {
         filterDto.setEndDate(null);
+        filterWithInvalidDate();
+    }
 
+    private void filterWithInvalidDate() {
         CarFilterEvaluator carFilterEvaluator = new CarFilterEvaluator(filterDto);
         List<Car> result = carFilterEvaluator.filterCars(cars);
         assertEquals(0, result.size());
