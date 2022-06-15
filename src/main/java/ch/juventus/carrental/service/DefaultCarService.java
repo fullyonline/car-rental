@@ -24,7 +24,6 @@ public class DefaultCarService implements CarService{
         this.fileCarDatabase = fileCarDatabase;
     }
 
-
     @Override
     public Boolean createCar(Car car) {
         // check if the entity is valid
@@ -66,7 +65,9 @@ public class DefaultCarService implements CarService{
     }
 
     @Override
-    public Car getCar(Long id) { return fileCarDatabase.select(id); }
+    public Car getCar(Long id) {
+        return fileCarDatabase.select(id);
+    }
 
     @Override
     public boolean updateCar(Long id, Car car) {
@@ -77,7 +78,9 @@ public class DefaultCarService implements CarService{
     }
 
     @Override
-    public boolean deleteCar(Long id) { return fileCarDatabase.delete(id); }
+    public boolean deleteCar(Long id) {
+        return fileCarDatabase.delete(id);
+    }
 
     @Override
     public boolean createRental(Long id, Rental rental) {

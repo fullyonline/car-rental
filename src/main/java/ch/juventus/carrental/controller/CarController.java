@@ -24,11 +24,6 @@ public class CarController {
         this.defaultCarService = defaultCarService;
     }
 
-    /*
-    TODO: Change Date to LocalDate in Rental-Class
-    TODO: Change Date to LocalDate in Filter-Class
-    */
-
     @GetMapping("/api/v1/cars")
     @Operation(summary="Returns all saved cars. If a filter object is passed, the cars will be filtered accordingly.", responses = {
             @ApiResponse(description = "Success", responseCode = "200")
